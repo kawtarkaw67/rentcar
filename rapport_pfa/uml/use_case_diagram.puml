@@ -1,0 +1,48 @@
+@startuml
+left to right direction
+actor Administrateur
+actor "Employé" as Employe
+actor Client
+
+rectangle "Application de gestion de location de voitures" {
+  usecase "S'authentifier" as UC1
+  usecase "Réinitialiser\nle mot de passe" as UC2
+  usecase "Gérer les voitures" as UC3
+  usecase "Gérer les clients" as UC4
+  usecase "Gérer les réservations" as UC5
+  usecase "Consulter les statistiques" as UC6
+  usecase "Gérer les rôles" as UC7
+  usecase "Consulter le catalogue" as UC8
+  usecase "Créer une demande\nde réservation" as UC9
+  usecase "Suivre ses réservations" as UC10
+  usecase "Télécharger une facture PDF" as UC11
+  usecase "Exporter en CSV" as UC12
+  usecase "Télécharger le rapport PDF" as UC13
+}
+
+Administrateur --> UC1
+Administrateur --> UC2
+Administrateur --> UC3
+Administrateur --> UC4
+Administrateur --> UC5
+Administrateur --> UC6
+Administrateur --> UC7
+Administrateur --> UC12
+Administrateur --> UC13
+Administrateur --> UC11
+
+Employe --> UC1
+Employe --> UC2
+Employe --> UC4
+Employe --> UC5
+Employe --> UC6
+Employe --> UC12
+Employe --> UC11
+
+Client --> UC1
+Client --> UC2
+Client --> UC8
+Client --> UC9
+Client --> UC10
+Client --> UC11
+@enduml

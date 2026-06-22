@@ -1,0 +1,197 @@
+\chapter{Conception et architecture}
+
+Ce chapitre présente l'architecture technique, le modèle de données et les principaux schémas UML utilisés pour concevoir l'application.
+
+\section{Architecture logicielle retenue}
+
+L'application suit une architecture monolithique Django organisée autour d'une application métier \texttt{core}. La logique est structurée selon le modèle MVT (\textit{Model-View-Template}) : les modèles décrivent les entités métier, les vues portent les traitements et les contrôles d'accès, les templates assurent l'affichage, et les routes relient les URL aux fonctionnalités.
+
+\begin{table}[H]
+\centering
+\caption{Choix technologiques essentiels}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Technologie} & \textbf{Utilisation} & \textbf{Justification} \\
+\hline
+Django 6.0.5 \cite{django} & Framework principal & ORM, formulaires, authentification, vues et structure MVT intégrés. \\
+\hline
+SQLite \cite{sqlite} & Base de données & Adaptée au développement local et à la démonstration. \\
+\hline
+Bootstrap 5 \cite{bootstrap} & Interface & Mise en forme responsive et cohérente. \\
+\hline
+ReportLab \cite{reportlab} & PDF & Génération de factures et de rapports. \\
+\hline
+Playwright \cite{playwright} & Tests E2E & Validation de parcours utilisateur dans un navigateur réel. \\
+\hline
+\end{tabularx}
+\end{table}
+
+SQLite reste un choix de développement. Pour une mise en production avec plusieurs utilisateurs, une migration vers PostgreSQL serait plus adaptée.
+
+\section{Structure logicielle du projet}
+
+\begin{lstlisting}[language=bash,caption={Structure simplifiée du dépôt}]
+pfaKawtar/
+|-- manage.py
+|-- requirements.txt
+|-- location_voiture/
+|   |-- settings.py
+|   |-- urls.py
+|-- core/
+|   |-- models.py
+|   |-- forms.py
+|   |-- views.py
+|   |-- urls.py
+|   |-- templates/core/
+|   |-- tests.py
+|   |-- test_forms.py
+|-- tests_e2e/
+|-- rapport_pfa/
+\end{lstlisting}
+
+\section{Modèle de données}
+
+Le modèle de données repose sur huit entités : \texttt{User}, \texttt{Client}, \texttt{Voiture}, \texttt{Reservation}, \texttt{Categorie}, \texttt{Paiement}, \texttt{Historique} et \texttt{Notification}. Le lien optionnel entre \texttt{Client} et \texttt{User} permet de gérer les clients possédant un compte tout en conservant des clients saisis par le personnel.
+
+\begin{table}[H]
+\centering
+\caption{Entités métier et responsabilités}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Entité} & \textbf{Responsabilité} \\
+\hline
+User & Compte Django utilisé pour l'authentification, les groupes et les notifications. \\
+\hline
+Client & Informations personnelles du client, avec lien optionnel vers un compte utilisateur. \\
+\hline
+Voiture & Véhicule du parc : immatriculation, tarif, statut, image et catégorie. \\
+\hline
+Reservation & Période de location, statut, montant calculé, retour réel et remarque. \\
+\hline
+Categorie & Classification des véhicules. \\
+\hline
+Paiement & Paiement manuel associé à une réservation. \\
+\hline
+Historique & Journalisation des actions importantes. \\
+\hline
+Notification & Message interne persistant destiné à un utilisateur. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Diagramme de classes}
+
+Le diagramme de classes ci-dessous complète les huit entités du système avec leurs attributs principaux et les cardinalités utilisées dans l'application.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  cls/.style={draw, rounded corners=1pt, fill=softgray, text width=3.4cm, minimum height=1cm, font=\scriptsize},
+  assoc/.style={-Latex, thick}
+]
+\node[cls] (user) at (0,5.2) {\centering\textbf{User}\\\hrule\vspace{2pt}\raggedright username\\ email\\ password\\ is\_staff\\ is\_superuser};
+\node[cls] (client) at (0,1.8) {\centering\textbf{Client}\\\hrule\vspace{2pt}\raggedright nom\\ prenom\\ cin\\ telephone\\ email\\ adresse\\ user};
+\node[cls] (voiture) at (5.2,1.8) {\centering\textbf{Voiture}\\\hrule\vspace{2pt}\raggedright marque\\ modele\\ immatriculation\\ annee\\ prix\_jour\\ statut\\ image\\ categorie};
+\node[cls] (categorie) at (5.2,5.2) {\centering\textbf{Categorie}\\\hrule\vspace{2pt}\raggedright nom\\ description\\ date\_creation};
+\node[cls] (reservation) at (2.6,-2.0) {\centering\textbf{Reservation}\\\hrule\vspace{2pt}\raggedright date\_debut\\ date\_fin\\ montant\_total\\ statut\\ date\_retour\_reelle\\ remarque\\\vspace{2pt}\hrule\vspace{2pt} calculer\_montant()\\ save()};
+\node[cls] (paiement) at (7.6,-2.0) {\centering\textbf{Paiement}\\\hrule\vspace{2pt}\raggedright montant\\ date\_paiement\\ mode\_paiement\\ statut\\ date\_creation};
+\node[cls] (historique) at (-2.4,-2.0) {\centering\textbf{Historique}\\\hrule\vspace{2pt}\raggedright action\\ description\\ utilisateur\\ reservation\\ date\_action};
+\node[cls] (notification) at (-4.4,2.0) {\centering\textbf{Notification}\\\hrule\vspace{2pt}\raggedright titre\\ message\\ lu\\ lien\\ date\_creation};
+
+\draw[assoc] (client) -- node[left]{0..1} node[right]{1} (user);
+\draw[assoc] (voiture) -- node[right]{0..*} node[left]{0..1} (categorie);
+\draw[assoc] (reservation) -- node[left]{0..*} node[right]{1} (client);
+\draw[assoc] (reservation) -- node[right]{0..*} node[left]{1} (voiture);
+\draw[assoc] (paiement) -- node[above]{0..*} node[below]{1} (reservation);
+\draw[assoc] (historique) -- node[above]{0..*} node[below]{0..1} (reservation);
+\draw[assoc] (historique) -- node[left]{0..*} node[right]{0..1} (user);
+\draw[assoc] (notification) -- node[above]{0..*} node[below]{1} (user);
+\end{tikzpicture}}
+\caption{Diagramme de classes complet du système}
+\end{figure}
+
+Les associations essentielles sont les suivantes : une réservation concerne exactement un client et une voiture ; une réservation peut recevoir plusieurs paiements ; une voiture peut appartenir à une catégorie ; les actions sont historisées et les notifications sont liées à un utilisateur.
+
+\section{Modèle logique de données}
+
+\begin{table}[H]
+\centering
+\caption{Modèle logique de données}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Table} & \textbf{Champs principaux} \\
+\hline
+auth\_user & id, username, password, email, is\_staff, is\_superuser \\
+\hline
+core\_client & id, user\_id, nom, prenom, cin, telephone, email, adresse \\
+\hline
+core\_voiture & id, categorie\_id, marque, modele, immatriculation, annee, prix\_jour, statut, image \\
+\hline
+core\_reservation & id, client\_id, voiture\_id, date\_debut, date\_fin, montant\_total, statut, date\_retour\_reelle, remarque \\
+\hline
+core\_categorie & id, nom, description, date\_creation \\
+\hline
+core\_paiement & id, reservation\_id, montant, date\_paiement, mode\_paiement, statut \\
+\hline
+core\_historique & id, utilisateur\_id, reservation\_id, action, description, date\_action \\
+\hline
+core\_notification & id, utilisateur\_id, titre, message, lu, lien, date\_creation \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Schémas UML retenus}
+
+Les schémas suivants complètent la conception en représentant les interactions, le cycle de vie des réservations et l'organisation technique.
+
+\subsection{Diagramme de cas d'utilisation}
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{figures/use\_case\_diagram.png}
+\caption{Diagramme de cas d'utilisation}
+\end{figure}
+
+\subsection{Diagramme de séquence : demande de réservation}
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{figures/sequence\_client\_reservation.png}
+\caption{Création d'une demande de réservation par le client}
+\end{figure}
+
+\subsection{Diagramme de séquence : traitement par le personnel}
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{figures/sequence\_staff\_validation.png}
+\caption{Traitement d'une réservation par le personnel}
+\end{figure}
+
+\subsection{Diagramme d'activité}
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{figures/activity\_reservation\_lifecycle.png}
+\caption{Cycle de vie d'une réservation}
+\end{figure}
+
+\subsection{Diagrammes techniques}
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.72\textheight,keepaspectratio]{figures/component\_diagram.png}
+\caption{Diagramme de composants}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.72\textheight,keepaspectratio]{figures/deployment\_diagram.png}
+\caption{Diagramme de déploiement}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.72\textheight,keepaspectratio]{figures/global\_architecture\_diagram.png}
+\caption{Architecture globale du système}
+\end{figure}
+
+\section{Remarques de conception}
+
+L'application privilégie une architecture simple et maintenable, adaptée au périmètre d'un PFA. Les validations métier critiques sont assurées principalement dans les formulaires et les vues. Une amélioration future consisterait à centraliser davantage ces règles au niveau des modèles ou dans une couche service dédiée.

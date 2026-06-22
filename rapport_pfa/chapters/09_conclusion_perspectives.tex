@@ -1,0 +1,13 @@
+\chapter{Conclusion et perspectives}
+
+Ce projet de fin d'année a permis de concevoir, développer et valider une application web de gestion de location de voitures avec Django. La solution obtenue centralise les véhicules, les clients, les réservations, les paiements, les documents et les indicateurs d'activité dans une application unique.
+
+Les objectifs essentiels ont été atteints. L'application propose une authentification avec séparation des profils, une gestion du parc automobile, un suivi des clients, un cycle complet de réservation, un espace client, des exports CSV, des factures PDF, un rapport global, des statistiques, une gestion des rôles, un historique et des notifications internes. Les règles métier importantes sont prises en compte : contrôle des conflits de réservation, refus des voitures en maintenance, calcul automatique du montant, transitions de statut et vérification de la propriété des réservations côté client.
+
+Le projet apporte aussi une expérience technique complète : modélisation UML, architecture MVT, utilisation de l'ORM Django, formulaires, vues protégées, génération PDF, requêtes AJAX et tests automatisés. La validation repose sur \textbf{222 tests Django} et \textbf{35 tests Playwright}, ce qui renforce la fiabilité de la solution et facilite ses évolutions futures.
+
+Certaines limites doivent toutefois être reconnues. La base SQLite convient au développement, mais une production multi-utilisateur nécessiterait PostgreSQL. Les validations métier sont encore principalement portées par les formulaires et les vues ; elles pourraient être davantage centralisées. Le projet n'est pas déployé sur un serveur cloud, le paiement en ligne n'est pas implémenté et les notifications restent internes à l'application.
+
+Les perspectives les plus réalistes sont donc la migration vers PostgreSQL, le déploiement sécurisé avec variables d'environnement, l'intégration d'un paiement en ligne, l'envoi de notifications email ou SMS, l'ajout d'un calendrier visuel des disponibilités, l'optimisation des images et le renforcement des validations métier. Ces améliorations prolongeraient naturellement le socle réalisé sans modifier la logique générale de l'application.
+
+En conclusion, le projet constitue une base fonctionnelle, démontrable et extensible pour la gestion d'une agence de location de voitures. Il répond au besoin principal de centralisation et montre une démarche complète allant de l'analyse à la validation.

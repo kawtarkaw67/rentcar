@@ -1,0 +1,135 @@
+\chapter{Analyse des besoins}
+
+Ce chapitre formalise les besoins fonctionnels, les acteurs, les droits d'accès et les règles métier retenues pour l'application. L'objectif est de préciser ce que le système doit permettre sans détailler à ce stade les choix d'implémentation.
+
+\section{Acteurs du système}
+
+\begin{table}[H]
+\centering
+\caption{Acteurs du système}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Acteur} & \textbf{Rôle principal} \\
+\hline
+Administrateur & Gère les données de référence, les comptes du personnel, les paiements, les statistiques et les documents. \\
+\hline
+Employé & Consulte les données opérationnelles et traite les réservations au quotidien. \\
+\hline
+Client & Consulte le catalogue, crée des demandes de réservation, suit ses réservations et récupère ses factures. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Besoins fonctionnels}
+
+\begin{longtable}{|p{3.4cm}|p{10.8cm}|}
+\caption{Besoins fonctionnels par module}\\
+\hline
+\textbf{Module} & \textbf{Besoins couverts} \\
+\hline
+Authentification & Connexion, déconnexion, redirection selon le profil, protection des pages internes et récupération de mot de passe. \\
+\hline
+Voitures et catégories & Gestion du parc automobile, images optionnelles, statuts, catégories, recherche, filtres et export CSV. \\
+\hline
+Clients & Création, consultation, modification, suppression, recherche, historique des réservations et export CSV. \\
+\hline
+Réservations & Création, contrôle des dates et des conflits, acceptation, refus, annulation, finalisation, facture PDF et export CSV. \\
+\hline
+Espace client & Inscription, catalogue, détail d'une voiture, demande de réservation, vérification AJAX et suivi personnel. \\
+\hline
+Administration & Tableau de bord, statistiques, rapport PDF, gestion des rôles et données de démonstration. \\
+\hline
+Paiements & Enregistrement manuel, modification, consultation et filtrage par statut. \\
+\hline
+Traçabilité & Historique des actions importantes, notifications internes et modification du profil utilisateur. \\
+\hline
+\end{longtable}
+
+\section{Matrice des droits}
+
+\begin{table}[H]
+\centering
+\caption{Matrice synthétique des droits fonctionnels}
+\begin{tabularx}{\textwidth}{|X|c|c|c|}
+\hline
+\textbf{Action ou module} & \textbf{Admin} & \textbf{Employé} & \textbf{Client} \\
+\hline
+Tableau de bord et statistiques & Oui & Oui & Non \\
+\hline
+Gestion complète des voitures et catégories & Oui & Non & Non \\
+\hline
+Consultation du parc automobile & Oui & Oui & Oui, via catalogue \\
+\hline
+Gestion complète des clients & Oui & Partielle & Non \\
+\hline
+Création et traitement des réservations & Oui & Oui & Demande seulement \\
+\hline
+Paiements & Oui & Consultation & Non \\
+\hline
+Exports CSV, factures et rapport PDF & Oui & Oui & Factures propres \\
+\hline
+Historique et notifications & Oui & Oui & Notifications propres \\
+\hline
+Gestion des rôles du personnel & Oui & Non & Non \\
+\hline
+Profil personnel & Oui & Oui & Oui \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Règles métier}
+
+\begin{table}[H]
+\centering
+\caption{Règles métier principales}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Code} & \textbf{Règle} \\
+\hline
+RG1 & Toute page interne nécessite un utilisateur authentifié. \\
+\hline
+RG2 & L'immatriculation d'une voiture, le CIN d'un client et le nom d'une catégorie sont uniques. \\
+\hline
+RG3 & Une réservation est toujours liée à un client et à une voiture. \\
+\hline
+RG4 & La date de fin doit être postérieure à la date de début lors d'une création contrôlée. \\
+\hline
+RG5 & Une voiture en maintenance ne peut pas être réservée. \\
+\hline
+RG6 & Une voiture ne peut pas être engagée dans deux réservations actives qui se chevauchent. \\
+\hline
+RG7 & Une demande passe d'abord au statut \texttt{en\_attente}, puis peut être acceptée, refusée, annulée ou terminée. \\
+\hline
+RG8 & L'acceptation marque la voiture comme louée ; la finalisation la remet disponible lorsque la location est clôturée. \\
+\hline
+RG9 & Le montant total est recalculé automatiquement à partir de la durée et du prix journalier. \\
+\hline
+RG10 & Un client ne peut consulter ou annuler que ses propres demandes dans les conditions autorisées. \\
+\hline
+RG11 & Les actions importantes sont journalisées et peuvent générer une notification interne. \\
+\hline
+RG12 & La date réelle de retour et une remarque peuvent être enregistrées lors de la clôture. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Scénarios métiers principaux}
+
+\subsection{Demande de réservation côté client}
+Le client se connecte, consulte le catalogue, choisit une voiture, saisit les dates et peut vérifier la disponibilité. Le système contrôle les dates, l'état du véhicule et les chevauchements avant d'enregistrer une demande en attente.
+
+\subsection{Traitement d'une demande côté personnel}
+Le personnel consulte les réservations, puis accepte, refuse, annule ou termine une location selon son état courant. Les changements de statut mettent à jour le véhicule, l'historique et les notifications.
+
+\subsection{Pilotage administratif}
+L'administrateur exploite les listes, les exports, les statistiques, les paiements et la gestion des rôles pour suivre l'activité et maintenir les données.
+
+\section{Fonctionnalités non retenues}
+
+Pour éviter toute confusion, les éléments suivants sont considérés comme des limites de la version actuelle : paiement en ligne, notifications email ou SMS, multi-agence, application mobile native et déploiement cloud opérationnel.
+
+\section{Sécurité et contrôle des accès}
+
+La sécurité repose sur le système d'authentification de Django, les sessions, la protection CSRF et les groupes \texttt{Admin} et \texttt{Employé}. Les pages internes sont protégées par \texttt{login\_required}. Les actions sensibles sont réservées à l'administrateur via un contrôle de rôle, tandis que les vues client vérifient la propriété des réservations avant tout affichage ou annulation.
+
+La validation des données est effectuée par les formulaires Django et renforcée dans les vues métier : unicité des champs critiques, cohérence des dates, contrôle des conflits, statut des voitures et transitions autorisées. Les limites restantes concernent surtout la centralisation des validations au niveau modèle, le chargement complet des variables d'environnement et les mesures de production comme HTTPS, serveur web dédié et limitation de débit.

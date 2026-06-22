@@ -1,0 +1,47 @@
+@startuml
+hide empty members
+skinparam classAttributeIconSize 0
+
+class User {
+  +username
+  +email
+  +is_staff
+  +groups
+}
+
+class Voiture {
+  +marque
+  +modele
+  +immatriculation
+  +annee
+  +prix_jour
+  +statut
+  +image
+}
+
+class Client {
+  +nom
+  +prenom
+  +cin
+  +telephone
+  +email
+  +adresse
+  +user
+}
+
+class Reservation {
+  +client
+  +voiture
+  +date_debut
+  +date_fin
+  +montant_total
+  +statut
+  +date_creation
+  +calculer_montant()
+  +save()
+}
+
+User "1" -- "0..1" Client : associe
+Client "1" -- "0..*" Reservation
+Voiture "1" -- "0..*" Reservation
+@enduml

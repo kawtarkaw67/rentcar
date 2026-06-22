@@ -1,0 +1,21 @@
+@startuml
+actor Client
+participant "Vue client_creer_reservation" as Vue
+participant "ReservationForm /\nClientReservationForm" as Form
+participant "Helper\n_valider_et_creer_reservation" as Helper
+database SQLite
+
+Client -> Vue : GET /client/reserver/
+Vue --> Client : formulaire
+
+Client -> Vue : POST voiture + dates
+Vue -> Form : bind(request.POST)
+Form --> Vue : formulaire valide
+Vue -> Helper : valider et creer reservation
+Helper -> SQLite : verifier conflits\net statut voiture
+SQLite --> Helper : resultat
+Helper -> SQLite : inserer reservation
+SQLite --> Helper : reservation en_attente
+Helper --> Vue : succes + montant
+Vue --> Client : redirection ou JSON success
+@enduml

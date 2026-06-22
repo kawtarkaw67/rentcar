@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>{{ client.nom }} {{ client.prenom }}</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>CIN :</strong> {{ client.cin }}</p>
+        <p><strong>Téléphone :</strong> {{ client.telephone }}</p>
+        <p><strong>Email :</strong> {{ client.email|default:"-" }}</p>
+        <p><strong>Adresse :</strong> {{ client.adresse|default:"-" }}</p>
+    </div>
+</div>
+
+<h3>Historique des réservations</h3>
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Voiture</th>
+            <th>Dates</th>
+            <th>Montant</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reservations %}
+        <tr>
+            <td>{{ r.voiture.marque }} {{ r.voiture.modele }}</td>
+            <td>{{ r.date_debut|date:"d/m/Y" }} - {{ r.date_fin|date:"d/m/Y" }}</td>
+            <td>{{ r.montant_total }} DH</td>
+            <td>{{ r.get_statut_display }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">Aucune réservation pour ce client.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'liste_clients' %}" class="btn btn-secondary">Retour</a>
+{% endblock %}

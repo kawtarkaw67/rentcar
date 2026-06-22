@@ -1,0 +1,188 @@
+\chapter{Réalisation et fonctionnalités}
+
+Ce chapitre présente les fonctionnalités effectivement réalisées. Pour éviter les répétitions, chaque module est décrit selon trois axes : objectif, fonctionnement et résultat obtenu.
+
+\section{Synthèse des fonctionnalités}
+
+\begin{longtable}{|p{3.4cm}|p{10.8cm}|}
+\caption{Fonctionnalités réalisées par module}\\
+\hline
+\textbf{Module} & \textbf{Fonctionnalités principales} \\
+\hline
+Authentification & Connexion, déconnexion, redirection par profil et récupération de mot de passe. \\
+\hline
+Voitures et catégories & CRUD administrateur, consultation personnel, filtres, recherche, image optionnelle et export CSV. \\
+\hline
+Clients & Gestion des fiches clients, recherche, détail et historique des réservations. \\
+\hline
+Réservations & Création, contrôle des conflits, acceptation, refus, annulation, finalisation et facture PDF. \\
+\hline
+Espace client & Inscription, catalogue, demande de réservation, suivi des demandes et annulation autorisée. \\
+\hline
+Rôles & Groupes Admin et Employé, restrictions d'accès et gestion du personnel par l'administrateur. \\
+\hline
+Documents et exports & Exports CSV, facture PDF par réservation et rapport PDF global. \\
+\hline
+Pilotage & Tableau de bord, statistiques, chiffre d'affaires et indicateurs d'activité. \\
+\hline
+Paiements & Enregistrement manuel, suivi du statut et consultation par le personnel. \\
+\hline
+Traçabilité & Historique automatique des actions et notifications internes persistantes. \\
+\hline
+\end{longtable}
+
+\section{Authentification}
+
+\textbf{Objectif :} sécuriser l'accès à l'application et orienter chaque utilisateur vers son espace.
+
+\textbf{Fonctionnement :} l'application utilise le système d'authentification de Django. Après connexion, un compte lié à un profil \texttt{Client} est redirigé vers l'espace client, tandis que le personnel accède au tableau de bord. Les pages internes sont protégées par \texttt{login\_required}. La récupération de mot de passe s'appuie sur les vues intégrées de Django.
+
+\textbf{Résultat obtenu :} les accès sont séparés entre administrateur, employé et client, ce qui limite les opérations sensibles aux profils autorisés.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=0.92\textwidth,height=0.65\textheight,keepaspectratio]{figures/screen\_login.png}
+\caption{Interface de connexion}
+\end{figure}
+
+\section{Gestion des voitures et des catégories}
+
+\textbf{Objectif :} administrer le parc automobile et organiser les véhicules par type.
+
+\textbf{Fonctionnement :} l'administrateur peut ajouter, modifier ou supprimer une voiture avec marque, modèle, immatriculation, année, tarif journalier, statut, catégorie et image optionnelle. Le personnel consulte la liste, utilise la recherche et filtre par statut ou catégorie. L'immatriculation et le nom de catégorie sont uniques.
+
+\textbf{Résultat obtenu :} le parc automobile est centralisé, filtrable et exportable en CSV. Les véhicules en maintenance sont exclus des demandes de réservation côté client.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.68\textheight,keepaspectratio]{figures/screen\_voitures\_liste.png}
+\caption{Liste des voitures avec recherche et filtres}
+\end{figure}
+
+\section{Gestion des clients}
+
+\textbf{Objectif :} conserver les informations utiles des clients et suivre leur activité.
+
+\textbf{Fonctionnement :} le personnel crée ou consulte les fiches clients. L'administrateur peut les modifier ou les supprimer. Le CIN est unique et un client peut être relié à un compte \texttt{User} pour accéder à l'espace client.
+
+\textbf{Résultat obtenu :} les données clients sont regroupées dans une base unique, avec accès rapide à l'historique des réservations.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.66\textheight,keepaspectratio]{figures/screen\_clients\_liste.png}
+\caption{Liste des clients}
+\end{figure}
+
+\section{Réservations}
+
+\textbf{Objectif :} gérer le cycle complet d'une location, depuis la demande jusqu'à la clôture.
+
+\textbf{Fonctionnement :} une réservation contient un client, une voiture, une période, un statut et un montant calculé automatiquement. Les vues contrôlent les dates, les conflits de réservation et le statut du véhicule. Une demande acceptée passe en cours et marque la voiture comme louée ; une location terminée remet la voiture disponible et peut enregistrer une date réelle de retour.
+
+\textbf{Résultat obtenu :} les erreurs principales de gestion manuelle sont réduites : double réservation, montant incorrect, absence de suivi d'état ou retour non tracé.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.68\textheight,keepaspectratio]{figures/screen\_reservations\_liste.png}
+\caption{Liste des réservations et actions de traitement}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.66\textheight,keepaspectratio]{figures/screen\_reservation\_detail.png}
+\caption{Détail d'une réservation avec actions, paiements et historique}
+\end{figure}
+
+\section{Espace client}
+
+\textbf{Objectif :} permettre au client de consulter le catalogue et de déposer ses demandes sans passer par le personnel.
+
+\textbf{Fonctionnement :} l'inscription crée simultanément un compte Django et un profil \texttt{Client}. Une fois connecté, le client consulte les voitures, vérifie la disponibilité par AJAX, crée une demande en attente et suit ses réservations. Il ne peut voir ou annuler que ses propres demandes.
+
+\textbf{Résultat obtenu :} le client dispose d'un parcours autonome, tandis que le personnel conserve le contrôle de la validation finale.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.68\textheight,keepaspectratio]{figures/screen\_client\_dashboard.png}
+\caption{Tableau de bord client}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.68\textheight,keepaspectratio]{figures/screen\_catalogue\_client.png}
+\caption{Catalogue des voitures côté client}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{figures/screen\_client\_availability\_ajax.png}
+\caption{Vérification de disponibilité côté client}
+\end{figure}
+
+\section{Gestion des rôles}
+
+\textbf{Objectif :} distinguer les responsabilités entre administrateur et employé.
+
+\textbf{Fonctionnement :} la séparation repose sur les groupes Django \texttt{Admin} et \texttt{Employé}. Les vues sensibles utilisent un contrôle de rôle. L'administrateur peut créer des comptes du personnel, modifier les groupes et supprimer les comptes non superutilisateurs.
+
+\textbf{Résultat obtenu :} les actions critiques comme la gestion des rôles, la modification du parc ou l'enregistrement des paiements sont réservées aux profils autorisés.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.64\textheight,keepaspectratio]{figures/screen\_gestion\_roles.png}
+\caption{Gestion des rôles du personnel}
+\end{figure}
+
+\section{Exports PDF et CSV}
+
+\textbf{Objectif :} produire des documents exploitables à partir des données de l'application.
+
+\textbf{Fonctionnement :} les vues d'export retournent des fichiers CSV pour les voitures, les clients et les réservations. Les factures PDF et le rapport global sont générés avec ReportLab à partir des informations stockées en base.
+
+\textbf{Résultat obtenu :} l'application fournit des documents de suivi et de facturation utiles pour la démonstration et pour une exploitation administrative simple.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.66\textheight,keepaspectratio]{figures/screen\_facture\_pdf.png}
+\caption{Facture PDF générée pour une réservation}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.66\textheight,keepaspectratio]{figures/screen\_rapport\_pdf.png}
+\caption{Rapport PDF global}
+\end{figure}
+
+\section{Statistiques}
+
+\textbf{Objectif :} offrir une vision synthétique de l'activité de l'agence.
+
+\textbf{Fonctionnement :} la page statistiques s'appuie sur les agrégations Django pour calculer les indicateurs : nombre de voitures, réservations, paiements, chiffre d'affaires, taux d'occupation et évolution mensuelle.
+
+\textbf{Résultat obtenu :} le personnel dispose d'indicateurs simples pour suivre l'activité sans manipuler directement la base de données.
+
+\begin{figure}[H]
+\centering
+\safeincludegraphics[width=\textwidth,height=0.66\textheight,keepaspectratio]{figures/screen\_statistiques.png}
+\caption{Page des statistiques}
+\end{figure}
+
+\section{Paiements}
+
+\textbf{Objectif :} suivre les règlements associés aux réservations.
+
+\textbf{Fonctionnement :} le paiement est enregistré manuellement par l'administrateur avec montant, date, mode et statut. Il reste lié à une réservation et peut être consulté par le personnel.
+
+\textbf{Résultat obtenu :} le projet couvre le suivi interne des paiements, sans prétendre intégrer un paiement en ligne.
+
+\section{Historique et notifications}
+
+\textbf{Objectif :} améliorer la traçabilité et informer les utilisateurs des actions importantes.
+
+\textbf{Fonctionnement :} un helper crée des entrées dans \texttt{Historique} lors des événements métier : création, validation, refus, annulation, paiement ou retour. Les notifications internes sont liées à un utilisateur et peuvent être marquées comme lues.
+
+\textbf{Résultat obtenu :} les principales actions sont traçables, et les utilisateurs disposent d'un retour interne sur les événements qui les concernent.
+
+\section{Bilan de réalisation}
+
+La réalisation couvre les besoins essentiels du cahier des charges : gestion du parc, clients, réservations, espace client, rôles, documents, statistiques, paiements, historique et notifications. Les détails techniques secondaires, comme les routes principales et les extraits de code métier, sont placés en annexes afin de conserver un corps de rapport plus lisible.

@@ -1,0 +1,31 @@
+@startuml
+start
+:Saisie d'une demande;
+if (Dates valides ?) then (Oui)
+  if (Voiture en maintenance ?) then (Non)
+    if (Conflit de periode ?) then (Non)
+      :Creer reservation en_attente;
+      if (Decision staff) then (Accepter)
+        :Passer a en_cours;
+        :Voiture -> louee;
+        if (Location finalisee ?) then (Oui)
+          :Passer a terminee;
+          :Voiture -> disponible;
+        else (Annuler)
+          :Passer a annulee;
+          :Liberer la voiture si possible;
+        endif
+      else (Refuser)
+        :Passer a annulee;
+      endif
+    else (Oui)
+      :Refuser la demande;
+    endif
+  else (Oui)
+    :Refuser la demande;
+  endif
+else (Non)
+  :Afficher erreur;
+endif
+stop
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+skinparam componentStyle rectangle
+
+actor Utilisateur
+component "Navigateur Web" as Browser
+component "Routes Django\nlocation_voiture.urls\ncore.urls" as Routes
+component "Views Django\ncore.views" as Views
+component "Forms Django\ncore.forms" as Forms
+component "Templates HTML\ncore/templates/core" as Templates
+component "Models Django\ncore.models" as Models
+database "SQLite" as DB
+component "Stockage media\nimages voitures" as Media
+component "ReportLab\nPDF" as PDF
+component "Exports CSV" as CSV
+
+Utilisateur --> Browser
+Browser --> Routes
+Routes --> Views
+Views --> Forms
+Views --> Templates
+Views --> Models
+Models --> DB
+Views --> Media
+Views --> PDF
+Views --> CSV
+Templates --> Browser
+@enduml

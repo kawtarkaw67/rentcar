@@ -1,0 +1,176 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Gestion des réservations</h1>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <form method="get" class="d-flex">
+            <select name="statut" class="form-select me-2" style="width:auto" onchange="this.form.submit()">
+                <option value="">Tous les statuts</option>
+                {% for key, label in statuts %}
+                    <option value="{{ key }}" {% if statut_filter == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-outline-primary">Filtrer</button>
+        </form>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{% url 'export_reservations_csv' %}" class="btn btn-outline-success me-2">Exporter CSV</a>
+        <a href="{% url 'ajouter_reservation' %}" class="btn btn-warning">+ Nouvelle réservation</a>
+    </div>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Client</th>
+            <th>Voiture</th>
+            <th>Date début</th>
+            <th>Date fin</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in page_obj %}
+        <tr>
+            <td>{{ reservation.client.nom }} {{ reservation.client.prenom }}</td>
+            <td>
+                {% if reservation.voiture.image %}
+                    <img src="{{ reservation.voiture.image.url }}" width="40" class="rounded me-2">
+                {% endif %}
+                {{ reservation.voiture.marque }} {{ reservation.voiture.modele }}
+            </td>
+            <td>{{ reservation.date_debut|date:"d/m/Y" }}</td>
+            <td>{{ reservation.date_fin|date:"d/m/Y" }}</td>
+            <td>{{ reservation.montant_total }} DH</td>
+            <td class="status-cell">
+                {% if reservation.statut == "en_attente" %}
+                    <span class="badge bg-warning text-dark">En attente</span>
+                {% elif reservation.statut == "en_cours" %}
+                    <span class="badge bg-primary">En cours</span>
+                {% elif reservation.statut == "terminee" %}
+                    <span class="badge bg-success">Terminée</span>
+                {% else %}
+                    <span class="badge bg-danger">Annulée</span>
+                {% endif %}
+            </td>
+            <td class="action-cell" data-pk="{{ reservation.pk }}">
+                <a href="{% url 'detail_reservation' reservation.pk %}" class="btn btn-sm btn-info me-1">Détail</a>
+                {% if reservation.statut == "en_attente" %}
+                    <button data-url="{% url 'accepter_reservation' reservation.pk %}" class="btn btn-sm btn-success btn-ajax-admin me-1">Accepter</button>
+                    <button data-url="{% url 'refuser_reservation' reservation.pk %}" data-confirm="Refuser cette demande de réservation ?" class="btn btn-sm btn-danger btn-ajax-admin me-1">Refuser</button>
+                {% endif %}
+                {% if is_admin and reservation.statut != "en_attente" %}
+                <a href="{% url 'modifier_reservation' reservation.pk %}" class="btn btn-sm btn-warning me-1">Modifier</a>
+                {% endif %}
+                {% if reservation.statut == "en_cours" %}
+                    <button data-url="{% url 'terminer_reservation' reservation.pk %}" data-confirm="Terminer cette réservation ? La voiture sera de nouveau disponible." class="btn btn-sm btn-success btn-ajax-admin me-1">Terminer</button>
+                    <button data-url="{% url 'annuler_reservation' reservation.pk %}" data-confirm="Annuler cette réservation ?" class="btn btn-sm btn-danger btn-ajax-admin me-1">Annuler</button>
+                {% endif %}
+                {% if reservation.statut == "terminee" %}
+                    <a href="{% url 'facture_pdf' reservation.pk %}" class="btn btn-sm btn-info">PDF</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" class="text-center">Aucune réservation trouvée.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    const isAdmin = {% if is_admin %}true{% else %}false{% endif %};
+
+    function updateActionButtons(actionCell, status, pk) {
+        const detailUrl = `/reservations/${pk}/`;
+        const modifierUrl = `/reservations/${pk}/modifier/`;
+        const accepterUrl = `/reservations/${pk}/accepter/`;
+        const refuserUrl = `/reservations/${pk}/refuser/`;
+        const terminerUrl = `/reservations/${pk}/terminer/`;
+        const annulerUrl = `/reservations/${pk}/annuler/`;
+        const factureUrl = `/reservations/${pk}/facture/`;
+
+        let html = `<a href="${detailUrl}" class="btn btn-sm btn-info me-1">Détail</a> `;
+        
+        if (status === 'en_attente') {
+            html += `<button data-url="${accepterUrl}" class="btn btn-sm btn-success btn-ajax-admin me-1">Accepter</button> `;
+            html += `<button data-url="${refuserUrl}" data-confirm="Refuser cette demande de réservation ?" class="btn btn-sm btn-danger btn-ajax-admin me-1">Refuser</button> `;
+        }
+        
+        if (isAdmin && status !== 'en_attente') {
+            html += `<a href="${modifierUrl}" class="btn btn-sm btn-warning me-1">Modifier</a> `;
+        }
+        
+        if (status === 'en_cours') {
+            html += `<button data-url="${terminerUrl}" data-confirm="Terminer cette réservation ? La voiture sera de nouveau disponible." class="btn btn-sm btn-success btn-ajax-admin me-1">Terminer</button> `;
+            html += `<button data-url="${annulerUrl}" data-confirm="Annuler cette réservation ?" class="btn btn-sm btn-danger btn-ajax-admin me-1">Annuler</button> `;
+        }
+        
+        if (status === 'terminee') {
+            html += `<a href="${factureUrl}" class="btn btn-sm btn-info">PDF</a>`;
+        }
+        
+        actionCell.innerHTML = html;
+    }
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-ajax-admin');
+        if (!btn) return;
+
+        e.preventDefault();
+
+        const confirmMsg = btn.getAttribute('data-confirm');
+        if (confirmMsg && !confirm(confirmMsg)) return;
+
+        const url = btn.getAttribute('data-url');
+        const tr = btn.closest('tr');
+        const statusCell = tr.querySelector('.status-cell');
+        const actionCell = tr.querySelector('.action-cell');
+        const pk = actionCell.getAttribute('data-pk');
+
+        btn.disabled = true;
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showToast(data.message, 'success');
+                
+                // Update badge
+                let badgeClass = 'bg-secondary';
+                if (data.new_statut === 'en_attente') badgeClass = 'bg-warning text-dark';
+                else if (data.new_statut === 'en_cours') badgeClass = 'bg-primary';
+                else if (data.new_statut === 'terminee') badgeClass = 'bg-success';
+                else if (data.new_statut === 'annulee') badgeClass = 'bg-danger';
+
+                if (statusCell) {
+                    statusCell.innerHTML = `<span class="badge ${badgeClass}">${data.new_statut_display}</span>`;
+                }
+                
+                // Update action cell buttons
+                if (actionCell) {
+                    updateActionButtons(actionCell, data.new_statut, pk);
+                }
+            } else {
+                showToast(data.message, 'danger');
+                btn.disabled = false;
+            }
+        })
+        .catch(error => {
+            showToast('Une erreur est survenue lors de l\'action.', 'danger');
+            btn.disabled = false;
+        });
+    });
+</script>
+{% endblock %}

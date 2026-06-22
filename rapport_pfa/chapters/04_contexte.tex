@@ -1,0 +1,175 @@
+\chapter{Contexte et problématique}
+
+Ce chapitre présente le contexte dans lequel s'inscrit le projet, la problématique traitée ainsi que le périmètre fonctionnel retenu. Il introduit également l'organisation de la démarche projet, les outils utilisés et le planning de réalisation.
+
+\section{Contexte du projet}
+Le projet porte sur une application web de gestion de location de voitures destinée à une agence de taille moyenne. L'objectif général est de centraliser des opérations qui, sans outil dédié, sont souvent réparties entre des fichiers manuels, des tableurs, des échanges téléphoniques et des documents peu homogènes.
+
+Le besoin initial couvrait l'authentification, la gestion des voitures, des clients, des réservations et un tableau de bord. L'évolution du projet a ensuite enrichi ce socle avec un espace client, des exports CSV, des documents PDF, des statistiques et une gestion des rôles du personnel.
+
+\section{Problématique}
+Une agence de location doit répondre à plusieurs questions critiques au quotidien :
+\begin{itemize}
+  \item quelles voitures sont disponibles à une période donnée ;
+  \item quel client est lié à une réservation ;
+  \item quel montant doit être calculé pour une location ;
+  \item quel est l'état d'avancement d'une demande ou d'une location ;
+  \item quels indicateurs résument l'activité de l'agence.
+\end{itemize}
+
+Sans système structuré, ces questions génèrent plusieurs risques : double réservation d'un même véhicule, erreur sur les dates, suivi incomplet de l'historique, difficulté à distinguer les droits du personnel et faible traçabilité documentaire.
+
+La problématique centrale du projet peut donc être formulée ainsi : comment concevoir une application web simple, maintenable et fiable permettant de gérer le parc automobile, les clients, les réservations et les documents associés, tout en séparant correctement les rôles utilisateur ?
+
+\section{Étude synthétique de l'existant}
+
+\begin{table}[H]
+\centering
+\caption{Comparaison synthétique des approches}
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Approche} & \textbf{Avantages} & \textbf{Limites} \\
+\hline
+Gestion manuelle & Mise en place immédiate, aucun coût technique. & Erreurs fréquentes, faible traçabilité, absence de contrôle automatisé. \\
+\hline
+Tableurs & Calculs simples et classement initial des données. & Peu adaptés à la sécurité, au multi-rôle et aux conflits de réservation. \\
+\hline
+Logiciels spécialisés & Fonctionnalités riches et cadrées. & Coût, complexité, dépendance à une solution externe. \\
+\hline
+Application développée & Adaptée au besoin réel et évolutive. & Demande analyse, développement, validation et maintenance. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Périmètre fonctionnel}
+L'application développée couvre les modules suivants :
+\begin{itemize}
+  \item authentification et redirection selon le profil ;
+  \item récupération de mot de passe ;
+  \item gestion des voitures avec image optionnelle ;
+  \item gestion des clients ;
+  \item cycle de vie complet des réservations ;
+  \item espace client avec catalogue et demandes de réservation ;
+  \item actions asynchrones AJAX ;
+  \item gestion des rôles du personnel ;
+  \item statistiques, exports CSV, factures PDF et rapport PDF global ;
+  \item pages d'erreur, commande de seed et suites de tests.
+\end{itemize}
+
+Les fonctionnalités suivantes n'ont pas été implémentées dans cette version :
+\begin{itemize}
+  \item paiement en ligne (seul le paiement enregistré manuellement est implémenté) ;
+  \item notification externe par email ou SMS ;
+  \item gestion multi-agences ;
+  \item déploiement cloud.
+\end{itemize}
+
+\section{Objectifs du projet}
+Les objectifs du projet sont les suivants :
+\begin{itemize}
+  \item centraliser les données métier dans une application web unique ;
+  \item automatiser le calcul du montant total et le contrôle des conflits de réservation ;
+  \item distinguer les accès administrateur, employé et client ;
+  \item améliorer l'exploitation des données via exports, PDF et statistiques ;
+  \item proposer une base maintenable, testée et documentable dans un cadre académique.
+\end{itemize}
+
+\section{Résultats obtenus}
+Le tableau suivant synthétise les résultats concrets apportés par l'application par rapport aux objectifs fixés :
+
+\begin{table}[H]
+\centering
+\caption{Correspondance entre objectifs et résultats obtenus}
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\textbf{Objectif initial} & \textbf{Fonctionnalité réalisée} & \textbf{Résultat obtenu} \\
+\hline
+Centraliser les données & Application web unique avec 7 modèles de données & Les informations véhicules, clients, réservations, paiements et catégories sont regroupées dans une seule base. \\
+\hline
+Automatiser les calculs & Calcul automatique du montant total et contrôle des conflits & Le montant est recalculé à chaque sauvegarde ; les conflits de réservation sont bloqués automatiquement. \\
+\hline
+Séparer les rôles & Trois profils (Admin, Employé, Client) avec groupes Django & Chaque utilisateur n'accède qu'aux fonctionnalités qui lui sont dédiées. \\
+\hline
+Exploiter les données & Exports CSV, factures PDF, rapport PDF, statistiques & Les données saisies sont transformées en documents exploitables et indicateurs de pilotage. \\
+\hline
+Garantir la fiabilité & 222 tests Django et 35 tests Playwright & Les comportements critiques sont vérifiés automatiquement à chaque évolution. \\
+\hline
+Assurer la traçabilité & Historique des actions et notifications persistantes & Chaque action importante est journalisée et l'utilisateur est informé. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Gestion de projet}
+
+\subsection{Phases du projet}
+Le projet a été déroulé selon une démarche structurée en cinq phases principales :
+\begin{enumerate}
+  \item \textbf{Analyse :} étude de l'existant, recueil des besoins fonctionnels et non fonctionnels, identification des acteurs et des règles métier.
+  \item \textbf{Conception :} modélisation UML (diagrammes de cas d'utilisation, de classes, de séquence, d'activité et de composants), définition de l'architecture technique et du modèle de données.
+  \item \textbf{Développement :} implémentation des modèles, formulaires, vues, routes, templates, exports CSV, génération PDF et actions AJAX, selon l'architecture MVT de Django.
+  \item \textbf{Tests :} rédaction et exécution de 222 tests Django (unitaires et fonctionnels) ainsi que de 35 tests end-to-end Playwright.
+  \item \textbf{Finalisation :} rédaction du rapport, compilation LaTeX via Overleaf, production des diagrammes UML et captures d'écran.
+\end{enumerate}
+
+\subsection{Planning synthétique}
+Le tableau suivant synthétise la répartition des activités sur la durée du projet :
+
+\begin{table}[H]
+\centering
+\caption{Planning synthétique du projet}
+\begin{tabularx}{\textwidth}{|l|X|c|}
+\hline
+\textbf{Phase} & \textbf{Activités principales} & \textbf{Durée indicative} \\
+\hline
+Analyse & Étude de l'existant, recueil des besoins, règles métier & 2 semaines \\
+\hline
+Conception & Diagrammes UML, modèle de données, architecture technique & 2 semaines \\
+\hline
+Développement & Implémentation Django, CRUD, espace client, AJAX, PDF, CSV & 6 semaines \\
+\hline
+Tests & Tests Django (222), tests Playwright (35), recette fonctionnelle & 2 semaines \\
+\hline
+Finalisation & Rapport LaTeX, captures d'écran, compilation, relecture & 2 semaines \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Outils utilisés}
+Les outils et technologies mobilisés tout au long du projet sont les suivants :
+
+\begin{table}[H]
+\centering
+\caption{Outils et technologies du projet}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Outil} & \textbf{Rôle dans le projet} \\
+\hline
+Python \cite{python} & Langage principal de l'application. \\
+\hline
+Django 6.0.5 \cite{django} & Framework web : modèles, vues, formulaires, authentification, routes. \\
+\hline
+SQLite \cite{sqlite} & Base de données relationnelle embarquée, utilisée pour le développement. \\
+\hline
+Bootstrap 5 \cite{bootstrap} & Framework CSS pour la mise en forme responsive des interfaces. \\
+\hline
+ReportLab \cite{reportlab} & Bibliothèque Python pour la génération de factures PDF et du rapport global. \\
+\hline
+Pillow & Gestion du champ image des véhicules (\texttt{ImageField}). \\
+\hline
+Playwright \cite{playwright} & Framework de tests end-to-end pour la validation des parcours utilisateur. \\
+\hline
+Git / GitHub & Gestion de version du code source et du dépôt projet. \\
+\hline
+Overleaf / LaTeX & Rédaction et compilation du rapport de projet. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Organisation du travail}
+Le développement a été réalisé de manière itérative : chaque nouvelle fonctionnalité a été implémentée, testée puis validée avant de passer à la suivante. Les commits Git ont permis de suivre l'évolution du code et de revenir à des états antérieurs en cas de besoin. La rédaction du rapport a été menée en parallèle du développement, chaque chapitre étant progressivement enrichi à mesure que les fonctionnalités étaient finalisées.
+
+Les tests ont été écrits au fur et à mesure de l'implémentation, ce qui a permis de détecter rapidement les régressions et de maintenir une couverture fonctionnelle élevée. Les diagrammes UML ont été modélisés à partir du code réalisé, afin de garantir leur cohérence avec l'implémentation.
+
+Le rapport a été rédigé en utilisant LaTeX via Overleaf, ce qui a facilité la gestion des références bibliographiques, des figures et de la mise en forme académique.
+
+\clearpage

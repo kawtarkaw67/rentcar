@@ -1,0 +1,112 @@
+\chapter{Annexes}
+
+\section{Commandes d'installation et d'exécution}
+Les commandes suivantes permettent de mettre en place l'environnement de développement :
+
+\begin{lstlisting}[language=bash,caption={Installation et exécution de l'application}]
+# Creation de l'environnement virtuel
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+
+# Installation des dependances
+pip install -r requirements.txt
+
+# Application des migrations
+python manage.py migrate
+
+# Creation des donnees de demonstration
+python manage.py seed_data
+
+# Lancement du serveur de developpement
+python manage.py runserver
+\end{lstlisting}
+
+\section{Identifiants de démonstration}
+Après exécution de la commande \texttt{seed\_data}, les comptes suivants sont disponibles :
+
+\begin{table}[H]
+\centering
+\caption{Comptes de démonstration}
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Profil} & \textbf{Identifiant} & \textbf{Mot de passe} \\
+\hline
+Administrateur & admin & admin1234 \\
+\hline
+Employé & employe & employe1234 \\
+\hline
+Client & client & client1234 \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Extrait des routes principales}
+\begin{lstlisting}[language=Python,caption={Routes principales de l'application}]
+path("", views.accueil, name="accueil")
+path("login/", views.login_view, name="login")
+path("logout/", views.logout_view, name="logout")
+path("dashboard/", views.dashboard, name="dashboard")
+path("password-reset/", views.password_reset_view, name="password_reset")
+path("voitures/", views.liste_voitures, name="liste_voitures")
+path("voitures/ajouter/", views.ajouter_voiture, name="ajouter_voiture")
+path("clients/", views.liste_clients, name="liste_clients")
+path("reservations/", views.liste_reservations, name="liste_reservations")
+path("client/dashboard/", views.client_dashboard, name="client_dashboard")
+path("client/voitures/", views.client_voitures, name="client_voitures")
+path("client/reserver/", views.client_creer_reservation, name="client_creer_reservation")
+path("roles/", views.gestion_roles, name="gestion_roles")
+path("statistiques/", views.statistiques, name="statistiques")
+path("historique/", views.historique, name="historique")
+path("notifications/", views.liste_notifications, name="liste_notifications")
+path("rapport/pdf/", views.rapport_pdf, name="rapport_pdf")
+\end{lstlisting}
+
+\section{Extrait de calcul métier}
+\begin{lstlisting}[language=Python,caption={Calcul automatique du montant total}]
+def calculer_montant(self):
+    nombre_jours = (self.date_fin - self.date_debut).days
+    if nombre_jours <= 0:
+        nombre_jours = 1
+    return nombre_jours * self.voiture.prix_jour
+\end{lstlisting}
+
+\section{Exemple de contrôle de conflit}
+\begin{lstlisting}[language=Python,caption={Detection des chevauchements de reservation}]
+conflit = Reservation.objects.filter(
+    voiture=reservation.voiture,
+    statut__in=["en_attente", "en_cours"],
+    date_debut__lt=reservation.date_fin,
+    date_fin__gt=reservation.date_debut,
+)
+\end{lstlisting}
+
+\section{Extrait de journalisation}
+\begin{lstlisting}[language=Python,caption={Fonction d'enregistrement dans l'historique}]
+def enregistrer_historique(action, description, 
+                           utilisateur=None, reservation=None):
+    Historique.objects.create(
+        action=action,
+        description=description,
+        utilisateur=utilisateur,
+        reservation=reservation,
+    )
+\end{lstlisting}
+
+\section{Structure du fichier requirements.txt}
+\begin{lstlisting}[language=bash,caption={Dependances du projet}]
+Django>=6.0,<6.1
+reportlab>=4.0
+Pillow>=11.0
+\end{lstlisting}
+
+\section{Variables d'environnement}
+Le fichier \texttt{.env.example} fournit le modèle de configuration suivant :
+
+\begin{lstlisting}[language=bash,caption={Modele de fichier .env.example}]
+SECRET_KEY=votre-cle-secrete-ici
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+\end{lstlisting}
+
+\clearpage

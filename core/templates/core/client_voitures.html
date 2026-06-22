@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Nos voitures</h1>
+
+<div class="row mb-3">
+    <div class="col-md-8">
+        <form method="get" class="d-flex flex-wrap gap-2">
+            <input type="text" name="q" class="form-control" placeholder="Rechercher par marque, modèle..." value="{{ query }}" style="flex:1;min-width:200px">
+            <select name="categorie" class="form-select" style="width:auto" onchange="this.form.submit()">
+                <option value="">Toutes les catégories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.pk }}" {% if categorie_filter == cat.pk|stringformat:"d" %}selected{% endif %}>{{ cat.nom }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-outline-primary">Rechercher</button>
+        </form>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'client_creer_reservation' %}" class="btn btn-warning">+ Demander une réservation</a>
+    </div>
+</div>
+
+{% if page_obj %}
+<div class="row">
+    {% for voiture in page_obj %}
+    <div class="col-md-4 mb-4">
+        <div class="card card-hoverable h-100">
+            {% if voiture.image %}
+                <img src="{{ voiture.image.url }}" alt="{{ voiture.marque }} {{ voiture.modele }}" class="card-img-top" style="height:200px;object-fit:cover;">
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;">
+                    <span class="text-muted">Pas d'image</span>
+                </div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ voiture.marque }} {{ voiture.modele }}</h5>
+                <p class="card-text text-muted small mb-2">{{ voiture.immatriculation }} — {{ voiture.annee }}</p>
+                <h4 class="text-primary mb-2">{{ voiture.prix_jour }} DH <small class="text-muted fs-6">/ jour</small></h4>
+                <p>
+                    {% if voiture.statut == "disponible" %}
+                        <span class="badge bg-success">Disponible</span>
+                    {% else %}
+                        <span class="badge bg-warning">Louée</span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                <a href="{% url 'client_detail_voiture' voiture.pk %}" class="btn btn-outline-primary w-100">Voir détails</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% include "core/pagination.html" %}
+{% else %}
+    <div class="alert alert-info">Aucune voiture trouvée.</div>
+{% endif %}
+
+<a href="{% url 'client_dashboard' %}" class="btn btn-secondary mt-3">Retour au dashboard</a>
+{% endblock %}

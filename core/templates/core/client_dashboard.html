@@ -1,0 +1,154 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Mon espace - {{ client.prenom }} {{ client.nom }}</h1>
+
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body text-center">
+                <h5>En attente</h5>
+                <h2>{{ en_attente_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body text-center">
+                <h5>En cours</h5>
+                <h2>{{ en_cours_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-white bg-success">
+            <div class="card-body text-center">
+                <h5>Terminées</h5>
+                <h2>{{ terminees_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card text-white" style="background-color: #0f172a;">
+            <div class="card-body text-center">
+                <h5>Total dépensé</h5>
+                <h2>{{ total_depense }} DH</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <h3>Historique des locations</h3>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{% url 'client_creer_reservation' %}" class="btn btn-warning">+ Demander une réservation</a>
+    </div>
+</div>
+
+{% if page_obj %}
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Voiture</th>
+            <th>Du</th>
+            <th>Au</th>
+            <th>Durée</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in page_obj %}
+        <tr>
+            <td>
+                {% if reservation.voiture.image %}
+                    <img src="{{ reservation.voiture.image.url }}" width="40" class="rounded me-2">
+                {% endif %}
+                {{ reservation.voiture.marque }} {{ reservation.voiture.modele }}<br><small class="text-muted">{{ reservation.voiture.immatriculation }}</small>
+            </td>
+            <td>{{ reservation.date_debut|date:"d/m/Y" }}</td>
+            <td>{{ reservation.date_fin|date:"d/m/Y" }}</td>
+            <td>{{ reservation.date_fin|timeuntil:reservation.date_debut }}</td>
+            <td>{{ reservation.montant_total }} DH</td>
+            <td class="status-cell">
+                {% if reservation.statut == "en_attente" %}
+                    <span class="badge bg-warning text-dark">En attente</span>
+                {% elif reservation.statut == "en_cours" %}
+                    <span class="badge bg-primary">En cours</span>
+                {% elif reservation.statut == "terminee" %}
+                    <span class="badge bg-success">Terminée</span>
+                {% else %}
+                    <span class="badge bg-danger">Annulée</span>
+                {% endif %}
+            </td>
+            <td class="action-cell">
+                {% if reservation.statut == "en_attente" %}
+                    <button class="btn btn-sm btn-outline-danger btn-ajax-action" data-url="{% url 'client_annuler_demande' reservation.pk %}" data-confirm="Annuler cette demande de réservation ?">Annuler</button>
+                {% endif %}
+                {% if reservation.statut == "terminee" %}
+                    <a href="{% url 'facture_pdf' reservation.pk %}" class="btn btn-sm btn-outline-info">PDF</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include "core/pagination.html" %}
+{% else %}
+    <div class="alert alert-info">Aucune réservation pour le moment.</div>
+{% endif %}
+
+<div class="text-end mt-3">
+    <a href="{% url 'logout' %}" class="btn btn-danger">Déconnexion</a>
+</div>
+
+<script>
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-ajax-action');
+        if (!btn) return;
+        
+        e.preventDefault();
+        
+        const confirmMsg = btn.getAttribute('data-confirm');
+        if (confirmMsg && !confirm(confirmMsg)) return;
+        
+        const url = btn.getAttribute('data-url');
+        const tr = btn.closest('tr');
+        const statusCell = tr.querySelector('.status-cell');
+        const actionCell = tr.querySelector('.action-cell');
+        
+        btn.disabled = true;
+        
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showToast(data.message, 'success');
+                if (statusCell) {
+                    statusCell.innerHTML = `<span class="badge bg-danger">${data.new_statut_display}</span>`;
+                }
+                if (actionCell) {
+                    actionCell.innerHTML = '';
+                }
+            } else {
+                showToast(data.message, 'danger');
+                btn.disabled = false;
+            }
+        })
+        .catch(error => {
+            showToast('Une erreur est survenue.', 'danger');
+            btn.disabled = false;
+        });
+    });
+</script>
+{% endblock %}

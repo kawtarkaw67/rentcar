@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1 class="display-4">Location Auto</h1>
+    <p class="lead">Votre agence de location de voitures de confiance</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h3 class="card-title">{{ total_voitures }}</h3>
+                <p class="card-text">Véhicules dans notre parc</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h3 class="card-title">{{ voitures_dispo }}</h3>
+                <p class="card-text">Disponibles immédiatement</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h3 class="card-title">24/7</h3>
+                <p class="card-text">Service client à votre écoute</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">Se connecter</a>
+    <a href="{% url 'client_register' %}" class="btn btn-success btn-lg">S'inscrire</a>
+</div>
+{% endblock %}

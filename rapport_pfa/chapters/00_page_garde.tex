@@ -1,0 +1,73 @@
+\begin{titlepage}
+\thispagestyle{empty}
+
+% Barre verticale verte à gauche
+\begin{tikzpicture}[remember picture, overlay]
+    \fill[emsigreen] 
+    ([xshift=1.2cm,yshift=-1.2cm]current page.north west)
+    rectangle
+    ([xshift=1.55cm,yshift=2.2cm]current page.south west);
+
+    \fill[emsired]
+    ([xshift=1.2cm,yshift=1.4cm]current page.south west)
+    rectangle
+    ([xshift=1.55cm,yshift=1.75cm]current page.south west);
+\end{tikzpicture}
+
+\begin{center}
+
+% Logos
+\begin{minipage}{0.82\textwidth}
+    \includegraphics[width=0.38\textwidth,height=2.2cm,keepaspectratio]{assets/page_garde_image1.png}
+    \hfill
+    \includegraphics[width=0.38\textwidth,height=2.2cm,keepaspectratio]{assets/page_garde_image2.png}
+\end{minipage}
+
+\vspace{2.7cm}
+
+% Titre principal
+{\Huge\bfseries Rapport de projet fin d'année\par}
+
+\vspace{0.2cm}
+
+{\Large\bfseries \filiere\par}
+
+\vspace{1.1cm}
+
+{\Large\bfseries Sous le thème\par}
+
+\vspace{0.35cm}
+
+\rule{0.58\textwidth}{0.4pt}
+
+\vspace{1.2cm}
+
+% Titre du thème
+{\Huge\bfseries\MakeUppercase{\titreProjet}\par}
+
+\vspace{1.2cm}
+
+\rule{0.58\textwidth}{0.4pt}
+
+\vfill
+
+% Réalisé par / Encadré par
+\begin{minipage}{0.72\textwidth}
+\raggedright
+{\Large\bfseries Réalisé par :\par}
+\vspace{0.15cm}
+{\large \etudiantA\par}
+
+\vspace{0.8cm}
+
+{\Large\bfseries Encadré par :\par}
+\vspace{0.15cm}
+{\large  \encadrantEcole\par}
+\end{minipage}
+
+\vfill
+
+{\Large\bfseries ANNEE UNIVERSITAIRE: \anneeUniversitaire\par}
+
+\end{center}
+\end{titlepage}

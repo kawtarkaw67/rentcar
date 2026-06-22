@@ -1,0 +1,25 @@
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+Le présent rapport décrit la conception et la réalisation d'une application web de gestion de location de voitures destinée à une agence de taille moyenne. Le projet répond au besoin de centraliser la gestion du parc automobile, des clients, des demandes de réservation, du suivi des locations et des indicateurs d'activité.
+
+La solution développée repose sur le framework Django, une base de données SQLite et des interfaces construites avec les templates Django et Bootstrap. Elle intègre plusieurs modules : authentification avec récupération de mot de passe, gestion des voitures avec images, gestion des clients, cycle de vie des réservations, catalogue et espace client, gestion des rôles, statistiques, exports CSV, génération de factures PDF et rapport global.
+
+L'application distingue trois profils principaux : administrateur, employé et client. L'administrateur dispose d'un accès complet, l'employé traite les opérations courantes, tandis que le client peut créer un compte, consulter le catalogue, déposer une demande de réservation et suivre son historique. Des règles métier assurent la cohérence du système, notamment le contrôle des conflits de réservation, l'interdiction de louer une voiture en maintenance, l'annulation limitée aux demandes autorisées et le calcul automatique du montant total.
+
+Ce rapport présente le contexte du projet, l'étude de l'existant, l'analyse fonctionnelle, la modélisation UML, l'architecture technique, les choix de réalisation, les tests effectués et les perspectives d'amélioration.
+
+\textbf{Mots clés :} Django, location de voitures, réservation, gestion de parc, application web, SQLite, Bootstrap.
+
+\clearpage
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This report presents the design and implementation of a car rental management web application for a medium-sized agency. The project aims to centralize vehicle management, customer records, booking requests, rental tracking and business indicators.
+
+The application is built with the Django framework, an SQLite database and user interfaces based on Django templates and Bootstrap. It includes several modules: authentication with password reset, vehicle management with images, customer management, reservation lifecycle, customer catalog and dashboard, role management, statistics, CSV exports, PDF invoice generation and a global PDF report.
+
+The system defines three main profiles: administrator, employee and customer. The administrator has full access, the employee handles daily operations, while the customer can create an account, browse the catalog, submit a reservation request and consult reservation history. Business rules ensure data consistency, including reservation conflict detection, prevention of renting vehicles under maintenance, controlled cancellation and automatic computation of the total amount.
+
+This report details the project context, existing solutions, functional analysis, UML modeling, technical architecture, implementation choices, validation tests and possible improvements.
+
+\textbf{Keywords:} Django, car rental, reservation, fleet management, web application, SQLite, Bootstrap.
+\clearpage

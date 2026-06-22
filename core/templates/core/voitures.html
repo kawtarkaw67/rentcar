@@ -1,0 +1,88 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Gestion des voitures</h1>
+
+<div class="row mb-3">
+    <div class="col-md-7">
+        <form method="get" class="d-flex flex-wrap gap-2">
+            <input type="text" name="q" class="form-control" style="width:auto;flex:1;min-width:200px" placeholder="Rechercher par marque, modèle ou immatriculation..." value="{{ query }}">
+            <select name="statut" class="form-select" style="width:auto" onchange="this.form.submit()">
+                <option value="">Tous les statuts</option>
+                {% for key, label in statuts %}
+                    <option value="{{ key }}" {% if statut_filter == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <select name="categorie" class="form-select" style="width:auto" onchange="this.form.submit()">
+                <option value="">Toutes les catégories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.pk }}" {% if categorie_filter == cat.pk|stringformat:"d" %}selected{% endif %}>{{ cat.nom }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-outline-primary">Filtrer</button>
+        </form>
+    </div>
+    <div class="col-md-5 text-end">
+        <a href="{% url 'export_voitures_csv' %}" class="btn btn-outline-success me-2">Exporter CSV</a>
+        <a href="{% url 'liste_categories' %}" class="btn btn-outline-secondary me-2">Catégories</a>
+        {% if is_admin %}
+            <a href="{% url 'ajouter_voiture' %}" class="btn btn-primary">+ Ajouter une voiture</a>
+        {% endif %}
+    </div>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Image</th>
+            <th>Marque</th>
+            <th>Modèle</th>
+            <th>Immatriculation</th>
+            <th>Année</th>
+            <th>Catégorie</th>
+            <th>Prix/jour</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for voiture in page_obj %}
+        <tr>
+            <td>
+                {% if voiture.image %}
+                    <img src="{{ voiture.image.url }}" alt="{{ voiture.marque }}" width="80" class="rounded">
+                {% else %}
+                    <span class="text-muted">—</span>
+                {% endif %}
+            </td>
+            <td>{{ voiture.marque }}</td>
+            <td>{{ voiture.modele }}</td>
+            <td>{{ voiture.immatriculation }}</td>
+            <td>{{ voiture.annee }}</td>
+            <td>{{ voiture.categorie|default:"—" }}</td>
+            <td>{{ voiture.prix_jour }} DH</td>
+            <td>
+                {% if voiture.statut == "disponible" %}
+                    <span class="badge bg-success">Disponible</span>
+                {% elif voiture.statut == "louee" %}
+                    <span class="badge bg-warning">Louée</span>
+                {% else %}
+                    <span class="badge bg-secondary">Maintenance</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'detail_voiture' voiture.pk %}" class="btn btn-sm btn-info">Détail</a>
+                <a href="{% url 'modifier_voiture' voiture.pk %}" class="btn btn-sm btn-warning">Modifier</a>
+                <a href="{% url 'supprimer_voiture' voiture.pk %}" class="btn btn-sm btn-danger">Supprimer</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9" class="text-center">Aucune voiture trouvée.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include "core/pagination.html" %}
+{% endblock %}

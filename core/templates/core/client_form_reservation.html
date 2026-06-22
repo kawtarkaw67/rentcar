@@ -1,0 +1,136 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>{{ titre }}</h1>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {% if field.errors %}
+                    <div class="text-danger small">{{ field.errors }}</div>
+                {% endif %}
+                
+                {% if field.name == 'voiture' %}
+                    <select name="{{ field.html_name }}" id="{{ field.id_for_label }}" class="form-select {% if field.errors %}is-invalid{% endif %}" {% if field.field.required %}required{% endif %}>
+                        <option value="">Sélectionnez un véhicule</option>
+                        {% for choice in field.field.choices %}
+                            {% if choice.0 %}
+                                <option value="{{ choice.0 }}" {% if field.value|stringformat:"s" == choice.0|stringformat:"s" %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input
+                        type="{{ field.field.widget.input_type }}"
+                        name="{{ field.html_name }}"
+                        id="{{ field.id_for_label }}"
+                        class="form-control {% if field.errors %}is-invalid{% endif %}"
+                        value="{{ field.value|default:'' }}"
+                        {% if field.field.required %}required{% endif %}
+                    >
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div id="dispo-feedback" class="mt-3 alert d-none"></div>
+
+            <div class="mt-4">
+                <button type="submit" id="submit-btn" class="btn btn-success">Envoyer la demande</button>
+                <a href="{% url 'client_dashboard' %}" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const form = document.querySelector('form');
+    const voitureSelect = document.querySelector('select[name="voiture"]');
+    const dateDebutInput = document.querySelector('input[name="date_debut"]');
+    const dateFinInput = document.querySelector('input[name="date_fin"]');
+    const feedbackDiv = document.getElementById('dispo-feedback');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function verifierDisponibilite() {
+        const voiture = voitureSelect.value;
+        const dateDebut = dateDebutInput.value;
+        const dateFin = dateFinInput.value;
+
+        if (!voiture || !dateDebut || !dateFin) {
+            feedbackDiv.className = 'mt-3 alert d-none';
+            submitBtn.disabled = false;
+            return;
+        }
+
+        feedbackDiv.className = 'mt-3 alert alert-info';
+        feedbackDiv.textContent = 'Vérification de la disponibilité...';
+        feedbackDiv.classList.remove('d-none');
+        submitBtn.disabled = true;
+
+        const url = `{% url 'verifier_disponibilite_voiture' %}?voiture=${voiture}&date_debut=${dateDebut}&date_fin=${dateFin}`;
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            feedbackDiv.className = 'mt-3 alert';
+            if (data.available) {
+                feedbackDiv.classList.add('alert-success');
+                feedbackDiv.textContent = data.message;
+                submitBtn.disabled = false;
+            } else {
+                feedbackDiv.classList.add('alert-danger');
+                feedbackDiv.textContent = data.message;
+                submitBtn.disabled = true;
+            }
+        })
+        .catch(error => {
+            feedbackDiv.className = 'mt-3 alert alert-danger';
+            feedbackDiv.textContent = 'Erreur lors de la vérification de la disponibilité.';
+            submitBtn.disabled = false;
+        });
+    }
+
+    voitureSelect.addEventListener('change', verifierDisponibilite);
+    dateDebutInput.addEventListener('change', verifierDisponibilite);
+    dateFinInput.addEventListener('change', verifierDisponibilite);
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitBtn.disabled = true;
+
+        const formData = new FormData(form);
+
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                sessionStorage.setItem('toast_message', data.message);
+                sessionStorage.setItem('toast_type', 'success');
+                window.location.href = "{% url 'client_dashboard' %}";
+            } else {
+                showToast(data.message, 'danger');
+                submitBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            showToast('Erreur lors de la soumission de la demande.', 'danger');
+            submitBtn.disabled = false;
+        });
+    });
+</script>
+{% endblock %}

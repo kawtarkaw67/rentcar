@@ -1,0 +1,171 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{ifthen}
+\usetikzlibrary{arrows.meta,positioning}
+
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\onehalfspacing
+\setlength{\parindent}{0.75cm}
+\setlength{\parskip}{0.2em}
+\setlist[itemize]{leftmargin=1.2cm}
+\definecolor{emsiblue}{HTML}{323E4F}
+\definecolor{emsigreen}{HTML}{00843D}
+\definecolor{emsired}{HTML}{C8102E}
+\definecolor{softgray}{HTML}{F3F5F7}
+\definecolor{linegray}{HTML}{B7C0CC}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=emsiblue,
+  citecolor=emsiblue,
+  urlcolor=emsiblue,
+  pdftitle={Rapport PFA - Application Web de Gestion de Location de Voitures},
+  pdfauthor={Kawtar Benyoussef}
+}
+
+\pagestyle{fancy}
+\setlength{\headheight}{15pt}
+\fancyhf{}
+\fancyhead[L]{Application Web de Gestion de Location de Voitures}
+\fancyhead[R]{PFA}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\Huge\color{emsiblue}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}{\normalfont\Large\bfseries\color{emsiblue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries\color{emsiblue}}{\thesubsection}{1em}{}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{softgray},
+  frame=single,
+  rulecolor=\color{linegray},
+  breaklines=true,
+  tabsize=2,
+  showstringspaces=false
+}
+\lstset{style=code}
+
+\newcommand{\titreProjet}{Application Web de Gestion de Location de Voitures}
+\newcommand{\anneeUniversitaire}{2025--2026}
+\newcommand{\filiere}{3\textsuperscript{e} année Ingénierie Informatique et Réseaux}
+\newcommand{\encadrantEcole}{Pr. Houda Orchi}
+\newcommand{\etudiantA}{Kawtar Benyoussef}
+
+\newcommand{\safeincludegraphics}[2][width=\textwidth,height=0.82\textheight,keepaspectratio]{%
+  \IfFileExists{#2}{%
+    \includegraphics[#1]{#2}%
+  }{%
+    \fbox{%
+      \parbox[c][0.26\textheight][c]{0.9\textwidth}{%
+        \centering
+        Placeholder image\\
+        \texttt{#2}
+      }%
+    }%
+  }%
+}
+
+\begin{document}
+
+\input{chapters/00_page_garde}
+
+\clearpage
+\pagenumbering{roman}
+\input{chapters/01_dedicaces_remerciements}
+\input{chapters/02_resume}
+\input{chapters/02_abreviations}
+
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+
+\pagenumbering{arabic}
+\input{chapters/03_introduction}
+\input{chapters/04_contexte}
+\input{chapters/05_analyse_besoins}
+\input{chapters/06_conception_architecture}
+\input{chapters/07_realisation_fonctionnalites}
+\input{chapters/08_tests_validation}
+\input{chapters/09_conclusion_perspectives}
+
+\chapter*{Bibliographie}
+\addcontentsline{toc}{chapter}{Bibliographie}
+\begin{thebibliography}{9}
+
+\bibitem{django}
+Django Software Foundation. \textit{Django 6.0 documentation}. Disponible sur : \url{https://docs.djangoproject.com/}
+
+\bibitem{django-models}
+Django Software Foundation. \textit{Models -- Django documentation}. Disponible sur : \url{https://docs.djangoproject.com/en/6.0/topics/db/models/}
+
+\bibitem{django-forms}
+Django Software Foundation. \textit{Forms -- Django documentation}. Disponible sur : \url{https://docs.djangoproject.com/en/6.0/topics/forms/}
+
+\bibitem{django-auth}
+Django Software Foundation. \textit{Authentication in Django -- Django documentation}. Disponible sur : \url{https://docs.djangoproject.com/en/6.0/topics/auth/}
+
+\bibitem{sqlite}
+SQLite Consortium. \textit{SQLite documentation}. Disponible sur : \url{https://www.sqlite.org/docs.html}
+
+\bibitem{bootstrap}
+Bootstrap Team. \textit{Bootstrap 5 documentation}. Disponible sur : \url{https://getbootstrap.com/docs/5.3/}
+
+\bibitem{reportlab}
+ReportLab. \textit{ReportLab User Guide}. Disponible sur : \url{https://www.reportlab.com/documentation/}
+
+\bibitem{playwright}
+Microsoft. \textit{Playwright documentation -- end-to-end testing for modern web apps}. Disponible sur : \url{https://playwright.dev/python/}
+
+\bibitem{owasp}
+OWASP Foundation. \textit{OWASP Top Ten -- Web Application Security Risks}. Disponible sur : \url{https://owasp.org/www-project-top-ten/}
+
+\bibitem{owasp-testing}
+OWASP Foundation. \textit{OWASP Web Security Testing Guide}. Disponible sur : \url{https://owasp.org/www-project-web-security-testing-guide/}
+
+\bibitem{uml}
+Object Management Group. \textit{Unified Modeling Language (UML) specification}. Disponible sur : \url{https://www.omg.org/spec/UML/}
+
+\bibitem{booch}
+Booch, G., Rumbaugh, J., Jacobson, I. \textit{The Unified Modeling Language User Guide}. 2\textsuperscript{e} édition, Addison-Wesley, 2005.
+
+\bibitem{python}
+Python Software Foundation. \textit{Python 3 documentation}. Disponible sur : \url{https://docs.python.org/3/}
+
+\end{thebibliography}
+
+\appendix
+\input{chapters/10_annexes}
+
+\end{document}

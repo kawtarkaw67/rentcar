@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Paiement #{{ paiement.pk }}</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Réservation :</strong>
+            <a href="{% url 'detail_reservation' paiement.reservation.pk %}">#{{ paiement.reservation.pk }}</a>
+            — {{ paiement.reservation.client.nom }} {{ paiement.reservation.client.prenom }}
+        </p>
+        <p><strong>Voiture :</strong> {{ paiement.reservation.voiture.marque }} {{ paiement.reservation.voiture.modele }}</p>
+        <p><strong>Montant :</strong> {{ paiement.montant }} DH</p>
+        <p><strong>Date de paiement :</strong> {{ paiement.date_paiement|date:"d/m/Y" }}</p>
+        <p><strong>Mode :</strong> {{ paiement.get_mode_paiement_display }}</p>
+        <p><strong>Statut :</strong>
+            {% if paiement.statut == "paye" %}
+                <span class="badge bg-success">Payé</span>
+            {% elif paiement.statut == "en_attente" %}
+                <span class="badge bg-warning">En attente</span>
+            {% else %}
+                <span class="badge bg-danger">Annulé</span>
+            {% endif %}
+        </p>
+        <p><strong>Enregistré le :</strong> {{ paiement.date_creation|date:"d/m/Y H:i" }}</p>
+    </div>
+</div>
+
+<a href="{% url 'modifier_paiement' paiement.pk %}" class="btn btn-warning">Modifier</a>
+<a href="{% url 'detail_reservation' paiement.reservation.pk %}" class="btn btn-secondary">Retour à la réservation</a>
+{% endblock %}

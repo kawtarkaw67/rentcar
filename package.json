@@ -1,0 +1,19 @@
+{
+  "name": "pfakawtar",
+  "version": "1.0.0",
+  "description": "Application web de gestion de location de voitures pour une agence de taille moyenne. Développée avec Django 6, SQLite et Bootstrap 5.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "playwright": "^1.60.0"
+  }
+}

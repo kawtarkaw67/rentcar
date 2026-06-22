@@ -1,0 +1,19 @@
+@startuml
+node "Poste utilisateur" {
+  artifact "Navigateur Web"
+}
+
+node "Machine locale du projet" {
+  node "Serveur Django" {
+    artifact "Application location_voiture"
+    artifact "App core"
+  }
+
+  database "SQLite\n(db.sqlite3)" as DB
+  folder "Media\n/images voitures" as Media
+}
+
+"Navigateur Web" --> "Application location_voiture" : HTTP
+"Application location_voiture" --> DB
+"Application location_voiture" --> Media
+@enduml

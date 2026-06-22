@@ -1,0 +1,51 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>{{ voiture.marque }} {{ voiture.modele }}</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        {% if voiture.image %}
+            <img src="{{ voiture.image.url }}" alt="{{ voiture.marque }} {{ voiture.modele }}" class="img-fluid rounded mb-3" style="max-height:300px;">
+        {% endif %}
+        <p><strong>Immatriculation :</strong> {{ voiture.immatriculation }}</p>
+        <p><strong>Année :</strong> {{ voiture.annee }}</p>
+        <p><strong>Prix par jour :</strong> {{ voiture.prix_jour }} DH</p>
+        <p><strong>Statut :</strong>
+            {% if voiture.statut == "disponible" %}
+                <span class="badge bg-success">Disponible</span>
+            {% elif voiture.statut == "louee" %}
+                <span class="badge bg-warning">Louée</span>
+            {% else %}
+                <span class="badge bg-secondary">Maintenance</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<h3>Historique des réservations</h3>
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Client</th>
+            <th>Dates</th>
+            <th>Montant</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reservations %}
+        <tr>
+            <td>{{ r.client.nom }} {{ r.client.prenom }}</td>
+            <td>{{ r.date_debut|date:"d/m/Y" }} - {{ r.date_fin|date:"d/m/Y" }}</td>
+            <td>{{ r.montant_total }} DH</td>
+            <td>{{ r.get_statut_display }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">Aucune réservation pour cette voiture.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'liste_voitures' %}" class="btn btn-secondary">Retour</a>
+{% endblock %}

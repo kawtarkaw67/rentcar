@@ -1,0 +1,38 @@
+@startuml
+left to right direction
+actor Administrateur
+actor "Employé" as Employe
+actor Client
+
+rectangle "Interface Web" {
+  rectangle "Pages publiques" as Public
+  rectangle "Pages staff" as StaffUI
+  rectangle "Espace client" as ClientUI
+}
+
+rectangle "Monolithe Django" {
+  rectangle "Routage" as R
+  rectangle "Vues et logique métier" as V
+  rectangle "Formulaires" as F
+  rectangle "Modèles" as M
+}
+
+database SQLite
+rectangle "Media voitures" as Media
+rectangle "Sorties CSV / PDF" as Out
+
+Administrateur --> StaffUI
+Employe --> StaffUI
+Client --> Public
+Client --> ClientUI
+
+Public --> R
+StaffUI --> R
+ClientUI --> R
+R --> V
+V --> F
+V --> M
+M --> SQLite
+V --> Media
+V --> Out
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+actor "Staff" as Staff
+participant "Vue accepter/refuser/\nannuler/terminer" as Vue
+participant Reservation
+participant Voiture
+database SQLite
+
+Staff -> Vue : action sur reservation
+Vue -> Reservation : charger reservation
+Reservation --> Vue : objet
+
+alt acceptation
+  Vue -> SQLite : verifier conflit en_cours
+  SQLite --> Vue : aucun conflit
+  Vue -> Reservation : statut = en_cours
+  Vue -> Voiture : statut = louee
+else refus
+  Vue -> Reservation : statut = annulee
+else annulation
+  Vue -> Reservation : statut = annulee
+  Vue -> SQLite : verifier autre reservation en_cours
+  SQLite --> Vue : resultat
+  Vue -> Voiture : statut = disponible si possible
+else finalisation
+  Vue -> Reservation : statut = terminee
+  Vue -> Voiture : statut = disponible
+end
+
+Vue --> Staff : redirection ou JSON
+@enduml

@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Confirmation</h1>
+
+<div class="card">
+    <div class="card-body text-center">
+        <p>
+            {% if action == "annuler" %}
+                Êtes-vous sûr de vouloir annuler {{ type_objet }} suivante ?
+            {% elif action == "terminer" %}
+                Êtes-vous sûr de vouloir marquer {{ type_objet }} comme terminée ?
+            {% else %}
+                Êtes-vous sûr de vouloir supprimer {{ type_objet }} : <strong>{{ objet }}</strong> ?
+            {% endif %}
+        </p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirmer</button>
+            <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

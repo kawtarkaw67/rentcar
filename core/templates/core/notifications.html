@@ -1,0 +1,50 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Notifications</h1>
+    <div>
+        {% if nb_non_lues > 0 %}
+            <span class="badge bg-danger me-2">{{ nb_non_lues }} non lue{{ nb_non_lues|pluralize }}</span>
+        {% endif %}
+        <a href="{% url 'tout_marquer_lu' %}" class="btn btn-outline-secondary btn-sm">Tout marquer comme lu</a>
+    </div>
+</div>
+
+{% if page_obj %}
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th style="width:30px"></th>
+            <th>Titre</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for n in page_obj %}
+        <tr class="{% if not n.lu %}table-active{% endif %}">
+            <td>
+                {% if not n.lu %}
+                    <span class="badge bg-primary">Nouveau</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if n.lien %}
+                    <a href="{% url 'lire_notification' n.pk %}" class="text-decoration-none fw-bold">{{ n.titre }}</a>
+                {% else %}
+                    <strong>{{ n.titre }}</strong>
+                {% endif %}
+            </td>
+            <td>{{ n.message }}</td>
+            <td>{{ n.date_creation|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include "core/pagination.html" %}
+{% else %}
+    <div class="alert alert-info">Aucune notification.</div>
+{% endif %}
+{% endblock %}

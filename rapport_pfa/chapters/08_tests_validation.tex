@@ -1,0 +1,109 @@
+\chapter{Tests et validation}
+
+La validation du projet repose sur deux niveaux complémentaires : 222 tests Django et 35 tests end-to-end Playwright. Les tests ne vérifient pas seulement l'affichage des pages ; ils contrôlent surtout les règles métier critiques, les droits d'accès et les parcours utilisateur.
+
+\section{Stratégie de test}
+
+\begin{itemize}
+  \item \textbf{Tests Django :} 222 tests unitaires et fonctionnels couvrant les modèles, formulaires, vues, règles métier, exports, PDF, rôles, espace client, paiements, historique et notifications.
+  \item \textbf{Tests Playwright \cite{playwright} :} 35 scénarios exécutés dans un navigateur réel pour valider les principaux parcours d'utilisation.
+\end{itemize}
+
+Les cas les plus sensibles concernent les dates invalides, les conflits de réservation, les voitures en maintenance, les accès non autorisés, la propriété des réservations côté client et les changements de statut.
+
+\section{Résultat de la suite Django}
+
+La commande de validation utilisée est la suivante :
+
+\begin{lstlisting}[language=bash]
+python manage.py test core -v2
+\end{lstlisting}
+
+\textbf{Les 222 tests Django ont été exécutés avec succès.} Ce résultat confirme que les fonctionnalités principales respectent les règles métier définies dans l'analyse des besoins.
+
+\section{Couverture fonctionnelle}
+
+\begin{table}[H]
+\centering
+\caption{Couverture synthétique des tests Django}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Catégorie} & \textbf{Éléments vérifiés} \\
+\hline
+Formulaires & Champs obligatoires, unicité, dates, inscription client, paiements et profil. \\
+\hline
+Modèles & Représentations, valeurs par défaut, calcul du montant, catégories, historique et notifications. \\
+\hline
+Vues métier & CRUD voitures/clients, réservations, exports CSV, PDF, statistiques et erreurs. \\
+\hline
+Règles critiques & Conflits, maintenance, transitions de statut, retour réel et annulation côté client. \\
+\hline
+Sécurité & Authentification, RBAC, restrictions d'accès et isolation des données client. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Exemples de tests représentatifs}
+
+\begin{table}[H]
+\centering
+\caption{Exemples de tests représentatifs}
+\begin{tabularx}{\textwidth}{|p{3.5cm}|X|X|}
+\hline
+\textbf{Exemple} & \textbf{Vérification} & \textbf{Intérêt métier} \\
+\hline
+Unicité immatriculation & Deux voitures ne peuvent pas partager la même immatriculation. & Évite les doublons dans le parc automobile. \\
+\hline
+Conflit de réservation & Une voiture déjà engagée sur une période active ne peut pas être réservée à nouveau. & Empêche la double location. \\
+\hline
+Acceptation AJAX & L'acceptation d'une demande retourne un JSON cohérent et met à jour le statut. & Valide le traitement sans rechargement complet. \\
+\hline
+Annulation client & Un client ne peut annuler que ses propres demandes autorisées. & Protège les données des autres clients. \\
+\hline
+Accès RBAC & Un employé ne peut pas accéder à la gestion des rôles. & Garantit la séparation des responsabilités. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Tests end-to-end Playwright}
+
+Les 35 tests Playwright sont regroupés dans \texttt{tests\_e2e/app.spec.js}. Ils simulent des actions réelles dans le navigateur : connexion, navigation, consultation des listes, création de données, traitement d'une réservation, téléchargement de documents, accès à l'espace client et vérification des restrictions de rôle.
+
+\begin{table}[H]
+\centering
+\caption{Couverture synthétique des tests Playwright}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Parcours} & \textbf{Scénarios validés} \\
+\hline
+Authentification & Accueil, connexion admin/client, mauvais identifiants, redirection et déconnexion. \\
+\hline
+Back-office & Navigation, listes voitures/clients/réservations, filtres, détails et formulaires. \\
+\hline
+Documents & Exports CSV et facture PDF téléchargeable. \\
+\hline
+Espace client & Inscription, tableau de bord, catalogue et demande de réservation. \\
+\hline
+Rôles et erreurs & Accès admin autorisé, employé bloqué et page 404 fonctionnelle. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\section{Recette fonctionnelle}
+
+La recette manuelle reprend le parcours principal : connexion administrateur, ajout d'une voiture, création ou inscription d'un client, demande de réservation, vérification de disponibilité, acceptation par le personnel, changement de statut du véhicule, finalisation, génération de facture PDF, consultation des statistiques et export CSV. Ces étapes sont couvertes par les tests automatisés.
+
+\section{Avertissements et limites}
+
+Deux avertissements techniques ont été identifiés lors des tests : certaines listes paginées gagneraient à être ordonnées explicitement, et quelques objets de test utilisent des dates naïves alors que \texttt{USE\_TZ = True}. Ces points ne bloquent pas l'application, mais ils constituent des améliorations utiles.
+
+Les limites principales restent les suivantes : validation métier encore partagée entre formulaires et vues, absence de chargement complet des variables \texttt{.env}, SQLite utilisé pour la démonstration, absence de paiement en ligne et notifications limitées à l'application.
+
+\section{Commandes de validation}
+
+\begin{lstlisting}[language=bash,caption={Commandes de test}]
+python manage.py test core -v2
+npx playwright test
+\end{lstlisting}
+
+La couverture obtenue constitue un socle fiable pour faire évoluer le projet tout en limitant les régressions.

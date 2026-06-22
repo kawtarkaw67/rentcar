@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Location Voitures</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load notifications_tags %}
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --accent: #f97316;
+            --bg-slate: #f8fafc;
+            --border-slate: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-slate);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.025em;
+        }
+
+        /* Custom Navbar */
+        .navbar {
+            background-color: #0f172a !important; /* slate-900 */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: #f8fafc !important;
+        }
+        .navbar-brand span {
+            color: var(--primary);
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #94a3b8 !important;
+            transition: color 0.15s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #f8fafc !important;
+        }
+        .nav-link.active {
+            color: #f8fafc !important;
+            font-weight: 600;
+        }
+
+        /* Custom Card */
+        .card {
+            background: #ffffff;
+            border: 1px solid var(--border-slate);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hoverable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        /* Table styling */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border-slate);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+        .table thead {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.725rem;
+            letter-spacing: 0.05em;
+            padding: 14px 16px;
+            border-bottom: none;
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+        .table td {
+            padding: 14px 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-slate);
+            color: #334155;
+            font-family: 'Fira Sans', sans-serif;
+        }
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.725rem;
+        }
+        .bg-warning {
+            background-color: #fef3c7 !important;
+            color: #d97706 !important;
+        }
+        .bg-primary {
+            background-color: #e0f2fe !important;
+            color: #0369a1 !important;
+        }
+        .bg-success {
+            background-color: #dcfce7 !important;
+            color: #15803d !important;
+        }
+        .bg-danger {
+            background-color: #fee2e2 !important;
+            color: #b91c1c !important;
+        }
+
+        /* Custom Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+        .btn-warning {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+            color: white !important;
+        }
+        .btn-warning:hover {
+            background-color: #d97706;
+            border-color: #d97706;
+        }
+
+        /* Modals & Forms */
+        .form-control, .form-select {
+            border: 1px solid var(--border-slate);
+            border-radius: 8px;
+            padding: 10px 14px;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        /* Lucide Icon placement */
+        .icon-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Dynamic notifications */
+        #toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .toast-custom {
+            background: #ffffff;
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 320px;
+            animation: slideIn 0.3s ease forwards;
+        }
+        .toast-custom.toast-success {
+            border-left-color: #10b981;
+        }
+        .toast-custom.toast-danger {
+            border-left-color: #ef4444;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            {% if user.is_authenticated and user.client %}
+                <a class="navbar-brand" href="{% url 'client_dashboard' %}"><span>Rent</span>Auto</a>
+                <div class="navbar-nav ms-auto flex-row gap-3">
+                    <a class="nav-link" href="{% url 'client_dashboard' %}">Mes réservations</a>
+                    <a class="nav-link" href="{% url 'client_voitures' %}">Nos voitures</a>
+                    <a class="nav-link" href="{% url 'liste_notifications' %}">
+                        Notifications
+                        {% nb_notifications_non_lues user as nb %}
+                        {% if nb > 0 %}
+                            <span class="badge bg-danger">{{ nb }}</span>
+                        {% endif %}
+                    </a>
+                    <a class="nav-link" href="{% url 'modifier_profil' %}">Profil</a>
+                    <a class="nav-link text-danger" href="{% url 'logout' %}">Déconnexion</a>
+                </div>
+            {% elif user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'dashboard' %}"><span>Rent</span>Auto Admin</a>
+                <span class="navbar-text me-3 small">({{ user.groups.first.name|default:"Staff" }})</span>
+                <div class="navbar-nav ms-auto flex-row flex-wrap gap-2">
+                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-link" href="{% url 'liste_voitures' %}">Voitures</a>
+                    <a class="nav-link" href="{% url 'liste_categories' %}">Catégories</a>
+                    <a class="nav-link" href="{% url 'liste_clients' %}">Clients</a>
+                    <a class="nav-link" href="{% url 'liste_reservations' %}">Réservations</a>
+                    <a class="nav-link" href="{% url 'liste_paiements' %}">Paiements</a>
+                    <a class="nav-link" href="{% url 'historique' %}">Historique</a>
+                    <a class="nav-link" href="{% url 'liste_notifications' %}">
+                        Notifications
+                        {% nb_notifications_non_lues user as nb %}
+                        {% if nb > 0 %}
+                            <span class="badge bg-danger">{{ nb }}</span>
+                        {% endif %}
+                    </a>
+                    <a class="nav-link" href="{% url 'modifier_profil' %}">Profil</a>
+                    {% if user.is_superuser or user.groups.first.name == 'Admin' %}
+                    <a class="nav-link" href="{% url 'gestion_roles' %}">Rôles</a>
+                    {% endif %}
+                    <a class="nav-link text-danger" href="{% url 'logout' %}">Déconnexion</a>
+                </div>
+            {% else %}
+                <a class="navbar-brand" href="{% url 'accueil' %}"><span>Rent</span>Auto</a>
+                <div class="navbar-nav ms-auto flex-row gap-3">
+                    <a class="nav-link" href="{% url 'login' %}">Connexion</a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Init Lucide
+        lucide.createIcons();
+
+        // Helper function to show notifications (toasts)
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast-custom toast-${type}`;
+            
+            let iconName = 'info';
+            if (type === 'success') iconName = 'check-circle';
+            if (type === 'danger') iconName = 'alert-triangle';
+
+            toast.innerHTML = `
+                <i data-lucide="${iconName}" style="color: ${type === 'success' ? '#10b981' : type === 'danger' ? '#ef4444' : '#0ea5e9'}"></i>
+                <div style="font-weight: 500; font-size: 0.9rem;">${message}</div>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Check for toast in sessionStorage
+        const storedMessage = sessionStorage.getItem('toast_message');
+        const storedType = sessionStorage.getItem('toast_type');
+        if (storedMessage) {
+            showToast(storedMessage, storedType || 'info');
+            sessionStorage.removeItem('toast_message');
+            sessionStorage.removeItem('toast_type');
+        }
+    </script>
+</body>
+</html>

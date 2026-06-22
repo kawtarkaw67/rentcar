@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PFA — Gestion de Location de Voitures | EMSI 2025-2026</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Reveal.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/night.min.css">
+
+  <!-- PptxGenJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Chargement de la présentation...</div>
+  </div>
+
+  <!-- Slide Counter -->
+  <div class="slide-counter" id="slideCounter">1 / 17</div>
+
+  <!-- Export PPTX Button -->
+  <button class="export-pptx-btn" onclick="exportToPPTX()">
+    <i class="fas fa-file-export"></i> Exporter PPTX
+  </button>
+
+  <!-- Navigation Controls -->
+  <div class="nav-controls">
+    <button class="nav-btn" onclick="Reveal.prev()"><i class="fas fa-chevron-left"></i></button>
+    <button class="nav-btn" onclick="Reveal.next()"><i class="fas fa-chevron-right"></i></button>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- REVEAL.JS SLIDES -->
+  <!-- ============================================ -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================== -->
+      <!-- SLIDE 1: PAGE DE GARDE -->
+      <!-- ============================== -->
+      <section class="cover-slide" data-transition="fade">
+        <div class="cover-icon slide-up">
+          <i class="fas fa-car-side"></i>
+        </div>
+        <h1 class="cover-title slide-up delay-1">
+          Application Web de<br>Gestion de Location de Voitures
+        </h1>
+        <p class="cover-subtitle slide-up delay-2">Projet de Fin d'Année — PFA 2025-2026</p>
+        <div class="cover-divider slide-up delay-3"></div>
+        <div class="cover-info slide-up delay-4">
+          <strong>Kawtar Benyoussef</strong><br>
+          Encadré par Pr. Houda Orchi<br>
+          <span style="color: var(--accent);">EMSI — École Mohammadia d'Ingénieurs</span>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 2: CONTEXTE -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">01</span> Contexte du Projet
+        </h2>
+
+        <div class="grid-2">
+          <div class="feature-item slide-up delay-1">
+            <div class="feature-icon"><i class="fas fa-building"></i></div>
+            <div class="feature-text">
+              <h4>Secteur en croissance</h4>
+              <p>Le marché de la location de voitures au Maroc connaît une forte demande, notamment pour les déplacements professionnels et le tourisme.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-2">
+            <div class="feature-icon"><i class="fas fa-clipboard-list"></i></div>
+            <div class="feature-text">
+              <h4>Gestion manuelle</h4>
+              <p>Les agences utilisent encore des registres papier ou des fichiers Excel, causant des pertes de données et des erreurs de suivi.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-3">
+            <div class="feature-icon"><i class="fas fa-clock"></i></div>
+            <div class="feature-text">
+              <h4>Besoin de digitalisation</h4>
+              <p>Nécessité d'une solution web centralisée pour gérer les véhicules, clients, réservations et paiements en temps réel.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-4">
+            <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
+            <div class="feature-text">
+              <h4>Objectif du PFA</h4>
+              <p>Développer une application web complète avec Django pour automatiser et optimiser la gestion de location.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 3: PROBLÉMATIQUE -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">02</span> Problématique
+        </h2>
+
+        <div style="max-width: 850px;">
+          <div class="feature-item slide-up delay-1" style="border-left-color: var(--danger);">
+            <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-times-circle"></i></div>
+            <div class="feature-text">
+              <h4>Suivi manuel des véhicules</h4>
+              <p>Erreurs de disponibilité et doublons de réservation fréquents.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-2" style="border-left-color: var(--danger);">
+            <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-times-circle"></i></div>
+            <div class="feature-text">
+              <h4>Absence d'historique centralisé</h4>
+              <p>Difficultés d'audit et de traçabilité des opérations.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-3" style="border-left-color: var(--danger);">
+            <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-times-circle"></i></div>
+            <div class="feature-text">
+              <h4>Gestion des paiements non structurée</h4>
+              <p>Risques de pertes financières et absence de suivi.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-4" style="border-left-color: var(--danger);">
+            <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-times-circle"></i></div>
+            <div class="feature-text">
+              <h4>Pas de tableau de bord</h4>
+              <p>Absence d'indicateurs de performance pour la prise de décision.</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-5" style="border-left-color: var(--danger);">
+            <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-times-circle"></i></div>
+            <div class="feature-text">
+              <h4>Communication client limitée</h4>
+              <p>Pas de notifications en temps réel sur l'état des réservations.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box slide-up delay-6" style="margin-top: 1em; border-left-color: var(--accent);">
+          <p><strong>Comment concevoir une application web fiable, sécurisée et performante pour la gestion de location de voitures ?</strong></p>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 4: OBJECTIFS -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">03</span> Objectifs du Projet
+        </h2>
+
+        <div class="grid-2">
+          <div>
+            <h3 style="color: var(--accent); margin-bottom: 0.8em;">
+              <i class="fas fa-cogs"></i> Objectifs Fonctionnels
+            </h3>
+            <div class="feature-item slide-up delay-1">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Gestion complète des véhicules</h4>
+                <p>CRUD, images, catégories, filtres, recherche, statuts</p>
+              </div>
+            </div>
+            <div class="feature-item slide-up delay-2">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Gestion des clients</h4>
+                <p>Inscription, profils, historique, pagination</p>
+              </div>
+            </div>
+            <div class="feature-item slide-up delay-3">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Workflow de réservation</h4>
+                <p>en_attente → en_cours → terminée avec validation</p>
+              </div>
+            </div>
+            <div class="feature-item slide-up delay-4">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Suivi des paiements</h4>
+                <p>Especes, virement, carte — historique et statuts</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="color: var(--accent); margin-bottom: 0.8em;">
+              <i class="fas fa-code"></i> Objectifs Techniques
+            </h3>
+            <div class="feature-item slide-up delay-1">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Architecture MVT Django</h4>
+                <p>Structure modulaire et maintenable</p>
+              </div>
+            </div>
+            <div class="feature-item slide-up delay-2">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Système RBAC</h4>
+                <p>3 rôles : Admin, Employé, Client</p>
+              </div>
+            </div>
+            <div class="feature-item slide-up delay-3">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Exports PDF & CSV</h4>
+                <p>ReportLab pour les factures et rapports</p>
+              </div>
+            </div>
+            <div class="feature-item slide-up delay-4">
+              <div class="feature-icon"><i class="fas fa-check"></i></div>
+              <div class="feature-text">
+                <h4>Tests complets</h4>
+                <p>Unitaires Django + E2E Playwright</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="grid-4" style="margin-top: 1em;">
+          <div class="stat-card slide-up delay-3">
+            <div class="stat-number" data-count="7">0</div>
+            <div class="stat-label">Modèles</div>
+          </div>
+          <div class="stat-card slide-up delay-4">
+            <div class="stat-number" data-count="55">0</div>
+            <div class="stat-label">Vues</div>
+          </div>
+          <div class="stat-card slide-up delay-5">
+            <div class="stat-number" data-count="42">0</div>
+            <div class="stat-label">Routes URL</div>
+          </div>
+          <div class="stat-card slide-up delay-6">
+            <div class="stat-number" data-count="39">0</div>
+            <div class="stat-label">Templates</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 5: TECHNOLOGIES -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">04</span> Technologies Utilisées
+        </h2>
+
+        <div class="grid-4">
+          <div class="tech-card slide-up delay-1">
+            <div class="tech-icon" style="background: rgba(48,105,152,0.2);">
+              <i class="fab fa-python" style="color: #306998; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">Python 3</div>
+            <div class="tech-desc">Langage principal du backend, puissant et polyvalent</div>
+          </div>
+
+          <div class="tech-card slide-up delay-2">
+            <div class="tech-icon" style="background: rgba(9,46,32,0.3);">
+              <i class="fas fa-guitar" style="color: #092E20; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">Django 6.0</div>
+            <div class="tech-desc">Framework MVC avec ORM, auth et admin intégrés</div>
+          </div>
+
+          <div class="tech-card slide-up delay-3">
+            <div class="tech-icon" style="background: rgba(0,59,87,0.2);">
+              <i class="fas fa-database" style="color: #003B57; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">SQLite</div>
+            <div class="tech-desc">Base de données légère, idéale pour le développement</div>
+          </div>
+
+          <div class="tech-card slide-up delay-4">
+            <div class="tech-icon" style="background: rgba(121,82,179,0.2);">
+              <i class="fab fa-bootstrap" style="color: #7952B3; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">Bootstrap 5</div>
+            <div class="tech-desc">Framework CSS pour une interface responsive</div>
+          </div>
+
+          <div class="tech-card slide-up delay-5">
+            <div class="tech-icon" style="background: rgba(204,0,0,0.15);">
+              <i class="fas fa-file-pdf" style="color: #CC0000; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">ReportLab</div>
+            <div class="tech-desc">Génération de factures et rapports PDF</div>
+          </div>
+
+          <div class="tech-card slide-up delay-6">
+            <div class="tech-icon" style="background: rgba(46,173,51,0.15);">
+              <i class="fas fa-theater-masks" style="color: #2EAD33; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">Playwright</div>
+            <div class="tech-desc">Tests end-to-end automatisés du navigateur</div>
+          </div>
+
+          <div class="tech-card slide-up delay-1">
+            <div class="tech-icon" style="background: rgba(255,99,132,0.15);">
+              <i class="fas fa-chart-pie" style="color: #FF6384; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">Chart.js</div>
+            <div class="tech-desc">Graphiques pour le tableau de bord</div>
+          </div>
+
+          <div class="tech-card slide-up delay-2">
+            <div class="tech-icon" style="background: rgba(239,68,68,0.15);">
+              <i class="fas fa-shield-alt" style="color: #EF4444; font-size: 1.4em;"></i>
+            </div>
+            <div class="tech-name">Django Auth</div>
+            <div class="tech-desc">Authentification et sécurité intégrées</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 6: ARCHITECTURE MVT -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">05</span> Architecture Django MVT
+        </h2>
+
+        <!-- Top Row: URLs → Views → Templates -->
+        <div class="grid-3" style="margin-bottom: 0.5em;">
+          <div class="arch-box slide-up delay-1" style="border-color: var(--secondary);">
+            <div class="arch-box-title"><i class="fas fa-globe"></i> URLs</div>
+            <div class="arch-box-items">
+              <code>core/urls.py</code><br>
+              42 routes nommées<br>
+              Patterns REST-like
+            </div>
+          </div>
+
+          <div class="arch-box slide-up delay-2" style="border-color: #7C3AED;">
+            <div class="arch-box-title"><i class="fas fa-cogs"></i> Views</div>
+            <div class="arch-box-items">
+              <code>core/views.py</code><br>
+              55+ fonctions<br>
+              @login_required<br>
+              @admin_required
+            </div>
+          </div>
+
+          <div class="arch-box slide-up delay-3" style="border-color: var(--success);">
+            <div class="arch-box-title"><i class="fas fa-palette"></i> Templates</div>
+            <div class="arch-box-items">
+              39 fichiers HTML<br>
+              Bootstrap 5<br>
+              Template tags custom
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrows -->
+        <div style="text-align: center; font-size: 1.5em; color: var(--accent); margin: 0.2em 0;">
+          <i class="fas fa-arrow-down"></i>
+        </div>
+
+        <!-- Bottom Row: Models + Database -->
+        <div class="grid-2">
+          <div class="arch-box slide-up delay-4" style="border-color: var(--warning);">
+            <div class="arch-box-title"><i class="fas fa-th"></i> Models (ORM Django)</div>
+            <div class="arch-box-items" style="text-align: left; padding-left: 1em;">
+              User • Client • Voiture • Categorie<br>
+              Reservation • Paiement • Historique • Notification<br>
+              <span style="color: var(--success);">Relations FK, 1:1, contraintes d'intégrité</span>
+            </div>
+          </div>
+
+          <div class="arch-box slide-up delay-5" style="border-color: var(--success);">
+            <div class="arch-box-title"><i class="fas fa-database"></i> Base de Données</div>
+            <div class="arch-box-items">
+              SQLite3<br>
+              10 migrations • Index uniques<br>
+              Validation côté modèle
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 7: ACTEURS -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">06</span> Acteurs du Système
+        </h2>
+
+        <div class="grid-3">
+          <!-- Admin -->
+          <div class="role-card role-admin slide-up delay-1">
+            <div class="role-icon"><i class="fas fa-user-shield"></i></div>
+            <div class="role-title">Administrateur</div>
+            <ul class="role-list">
+              <li>Gestion complète CRUD</li>
+              <li>Gestion des rôles et groupes</li>
+              <li>Configuration du système</li>
+              <li>Accès aux statistiques</li>
+              <li>Exports PDF/CSV</li>
+              <li>Protection superuser</li>
+            </ul>
+          </div>
+
+          <!-- Employé -->
+          <div class="role-card role-employee slide-up delay-2">
+            <div class="role-icon"><i class="fas fa-user-tie"></i></div>
+            <div class="role-title">Employé</div>
+            <ul class="role-list">
+              <li>Dashboard et KPIs</li>
+              <li>Créer des réservations</li>
+              <li>Accepter / Refuser</li>
+              <li>Ajouter des clients</li>
+              <li>Gérer les retours</li>
+              <li>Consulter l'historique</li>
+            </ul>
+          </div>
+
+          <!-- Client -->
+          <div class="role-card role-client slide-up delay-3">
+            <div class="role-icon"><i class="fas fa-user"></i></div>
+            <div class="role-title">Client</div>
+            <ul class="role-list">
+              <li>Inscription autonome</li>
+              <li>Catalogue voitures</li>
+              <li>Créer des réservations</li>
+              <li>Annuler ses demandes</li>
+              <li>Suivre ses réservations</li>
+              <li>Notifications personnelles</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 8: BASE DE DONNÉES -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">07</span> Base de Données — Modèles
+        </h2>
+
+        <div class="grid-4" style="gap: 0.6em;">
+          <!-- User -->
+          <div class="db-table slide-up delay-1">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #6366F1, #818CF8);">
+              <i class="fas fa-user"></i> User
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">username</span> <span class="db-field-type">Char</span></div>
+              <div class="db-field"><span class="db-field-name">email</span> <span class="db-field-type">Email</span></div>
+              <div class="db-field"><span class="db-field-name">is_staff</span> <span class="db-field-type">Bool</span></div>
+              <div class="db-field"><span class="db-field-name">is_superuser</span> <span class="db-field-type">Bool</span></div>
+            </div>
+          </div>
+
+          <!-- Client -->
+          <div class="db-table slide-up delay-2">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #8B5CF6, #A78BFA);">
+              <i class="fas fa-id-card"></i> Client
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">user</span> <span class="db-fk">1:1 → User</span></div>
+              <div class="db-field"><span class="db-field-name">nom</span> <span class="db-field-type">Char</span></div>
+              <div class="db-field"><span class="db-field-name">prenom</span> <span class="db-field-type">Char</span></div>
+              <div class="db-field"><span class="db-field-name">cin</span> <span class="db-field-type">Unique</span></div>
+              <div class="db-field"><span class="db-field-name">telephone</span> <span class="db-field-type">Char</span></div>
+            </div>
+          </div>
+
+          <!-- Voiture -->
+          <div class="db-table slide-up delay-3">
+            <div class="db-table-header">
+              <i class="fas fa-car"></i> Voiture
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">marque</span> <span class="db-field-type">Char</span></div>
+              <div class="db-field"><span class="db-field-name">modele</span> <span class="db-field-type">Char</span></div>
+              <div class="db-field"><span class="db-field-name">immatriculation</span> <span class="db-field-type">Unique</span></div>
+              <div class="db-field"><span class="db-field-name">prix_jour</span> <span class="db-field-type">Decimal</span></div>
+              <div class="db-field"><span class="db-field-name">statut</span> <span class="db-field-type">Choices</span></div>
+              <div class="db-field"><span class="db-field-name">categorie</span> <span class="db-fk">FK → Categorie</span></div>
+            </div>
+          </div>
+
+          <!-- Categorie -->
+          <div class="db-table slide-up delay-4">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #0891B2, #22D3EE);">
+              <i class="fas fa-tags"></i> Categorie
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">nom</span> <span class="db-field-type">Unique</span></div>
+              <div class="db-field"><span class="db-field-name">description</span> <span class="db-field-type">Text</span></div>
+              <div class="db-field"><span class="db-field-name">date_creation</span> <span class="db-field-type">DateTime</span></div>
+            </div>
+          </div>
+
+          <!-- Reservation -->
+          <div class="db-table slide-up delay-5">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #10B981, #34D399);">
+              <i class="fas fa-calendar-check"></i> Reservation
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">client</span> <span class="db-fk">FK → Client</span></div>
+              <div class="db-field"><span class="db-field-name">voiture</span> <span class="db-fk">FK → Voiture</span></div>
+              <div class="db-field"><span class="db-field-name">date_debut/fin</span> <span class="db-field-type">Date</span></div>
+              <div class="db-field"><span class="db-field-name">montant_total</span> <span class="db-field-type">Decimal</span></div>
+              <div class="db-field"><span class="db-field-name">statut</span> <span class="db-field-type">Choices</span></div>
+            </div>
+          </div>
+
+          <!-- Paiement -->
+          <div class="db-table slide-up delay-6">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #F59E0B, #FBBF24);">
+              <i class="fas fa-credit-card"></i> Paiement
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">reservation</span> <span class="db-fk">FK → Reservation</span></div>
+              <div class="db-field"><span class="db-field-name">montant</span> <span class="db-field-type">Decimal</span></div>
+              <div class="db-field"><span class="db-field-name">mode_paiement</span> <span class="db-field-type">Choices</span></div>
+              <div class="db-field"><span class="db-field-name">statut</span> <span class="db-field-type">Choices</span></div>
+            </div>
+          </div>
+
+          <!-- Historique -->
+          <div class="db-table slide-up delay-1">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #EC4899, #F472B6);">
+              <i class="fas fa-history"></i> Historique
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">action</span> <span class="db-field-type">Choices</span></div>
+              <div class="db-field"><span class="db-field-name">utilisateur</span> <span class="db-fk">FK → User</span></div>
+              <div class="db-field"><span class="db-field-name">reservation</span> <span class="db-fk">FK → Reservation</span></div>
+              <div class="db-field"><span class="db-field-name">date_action</span> <span class="db-field-type">DateTime</span></div>
+            </div>
+          </div>
+
+          <!-- Notification -->
+          <div class="db-table slide-up delay-2">
+            <div class="db-table-header" style="background: linear-gradient(135deg, #EF4444, #F87171);">
+              <i class="fas fa-bell"></i> Notification
+            </div>
+            <div class="db-table-body">
+              <div class="db-field"><span class="db-field-name">id</span> <span class="db-pk">PK</span></div>
+              <div class="db-field"><span class="db-field-name">utilisateur</span> <span class="db-fk">FK → User</span></div>
+              <div class="db-field"><span class="db-field-name">titre</span> <span class="db-field-type">Char</span></div>
+              <div class="db-field"><span class="db-field-name">message</span> <span class="db-field-type">Text</span></div>
+              <div class="db-field"><span class="db-field-name">lu</span> <span class="db-field-type">Bool</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box slide-up delay-3" style="margin-top: 0.6em;">
+          <p><i class="fas fa-link" style="color: var(--accent);"></i> <strong>Relations :</strong> User ←1:1→ Client ←1:N→ Reservation ←N:1→ Voiture ←N:1→ Categorie &nbsp;|&nbsp; Reservation ←1:N→ Paiement &nbsp;|&nbsp; User ←1:N→ Notification</p>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 9: FONCTIONNALITÉS -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">08</span> Fonctionnalités Principales
+        </h2>
+
+        <div class="grid-3">
+          <div class="feature-item slide-up delay-1">
+            <div class="feature-icon"><i class="fas fa-car"></i></div>
+            <div class="feature-text">
+              <h4>Gestion Véhicules</h4>
+              <p>CRUD complet, images, catégories, filtres, recherche, statuts</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-2">
+            <div class="feature-icon"><i class="fas fa-users"></i></div>
+            <div class="feature-text">
+              <h4>Gestion Clients</h4>
+              <p>Inscription, profils, historique, recherche, pagination</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-3">
+            <div class="feature-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="feature-text">
+              <h4>Réservations</h4>
+              <p>Workflow complet : en_attente → en_cours → terminée</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-4">
+            <div class="feature-icon"><i class="fas fa-credit-card"></i></div>
+            <div class="feature-text">
+              <h4>Paiements</h4>
+              <p>Especes, virement, carte — suivi des statuts</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-5">
+            <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+            <div class="feature-text">
+              <h4>Tableau de Bord</h4>
+              <p>11 KPIs, top véhicules, top clients, retours récents</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-6">
+            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="feature-text">
+              <h4>Statistiques</h4>
+              <p>CA mensuel, taux d'occupation, répartition</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-1">
+            <div class="feature-icon"><i class="fas fa-bell"></i></div>
+            <div class="feature-text">
+              <h4>Notifications</h4>
+              <p>Alertes temps réel, badge non-lus</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-2">
+            <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
+            <div class="feature-text">
+              <h4>Historique Audit</h4>
+              <p>Traçabilité complète de toutes les actions</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-3">
+            <div class="feature-icon"><i class="fas fa-file-export"></i></div>
+            <div class="feature-text">
+              <h4>Exports PDF & CSV</h4>
+              <p>Factures, rapports, export données</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-4">
+            <div class="feature-icon"><i class="fas fa-lock"></i></div>
+            <div class="feature-text">
+              <h4>Sécurité RBAC</h4>
+              <p>3 rôles, permissions, CSRF, validation</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-5">
+            <div class="feature-icon"><i class="fas fa-search"></i></div>
+            <div class="feature-text">
+              <h4>Recherche & Filtres</h4>
+              <p>Multi-champs, filtres statut/catégorie</p>
+            </div>
+          </div>
+
+          <div class="feature-item slide-up delay-6">
+            <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+            <div class="feature-text">
+              <h4>AJAX Temps Réel</h4>
+              <p>Vérification disponibilité, toasts, sans rechargement</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 10: RÉSERVATIONS -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">09</span> Gestion des Réservations
+        </h2>
+
+        <div class="grid-2-1">
+          <!-- Workflow -->
+          <div>
+            <h3 style="color: var(--accent); margin-bottom: 0.8em;">
+              <i class="fas fa-project-diagram"></i> Workflow Complet
+            </h3>
+
+            <div class="workflow-step slide-up delay-1">
+              <div class="workflow-number" style="background: var(--warning);">1</div>
+              <div class="workflow-content">
+                <div class="workflow-title">Création</div>
+                <div class="workflow-desc">Client ou employé crée une demande → statut "en_attente"</div>
+              </div>
+            </div>
+
+            <div class="workflow-step slide-up delay-2">
+              <div class="workflow-number" style="background: var(--accent);">2</div>
+              <div class="workflow-content">
+                <div class="workflow-title">Vérification</div>
+                <div class="workflow-desc">Contrôle disponibilité, conflits de dates, statut maintenance</div>
+              </div>
+            </div>
+
+            <div class="workflow-step slide-up delay-3">
+              <div class="workflow-number" style="background: var(--success);">3</div>
+              <div class="workflow-content">
+                <div class="workflow-title">Validation</div>
+                <div class="workflow-desc">Admin/employé accepte → "en_cours", voiture → "louee"</div>
+              </div>
+            </div>
+
+            <div class="workflow-step slide-up delay-4">
+              <div class="workflow-number" style="background: var(--danger);">4</div>
+              <div class="workflow-content">
+                <div class="workflow-title">Refus</div>
+                <div class="workflow-desc">Si refusé → "annulee", historique + notification créés</div>
+              </div>
+            </div>
+
+            <div class="workflow-step slide-up delay-5">
+              <div class="workflow-number" style="background: #8B5CF6;">5</div>
+              <div class="workflow-content">
+                <div class="workflow-title">Retour</div>
+                <div class="workflow-desc">Terminer → "terminee", voiture redevient "disponible"</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div>
+            <h3 style="color: var(--accent); margin-bottom: 0.8em;">
+              <i class="fas fa-star"></i> Fonctionnalités
+            </h3>
+
+            <div class="card slide-up delay-2">
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Vérification AJAX disponibilité</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Calcul automatique du montant</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Détection conflits de dates</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Blocage véhicules maintenance</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Actions AJAX (accepter/refuser)</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Annulation par le client</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Historique complet des actions</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Notifications automatiques</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Export facture PDF</li>
+                <li style="padding: 0.3em 0; font-size: 0.85em;"><i class="fas fa-check" style="color: var(--success); margin-right: 0.5em;"></i> Filtres et pagination</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 11: ESPACE CLIENT -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">10</span> Espace Client
+        </h2>
+
+        <div class="grid-3">
+          <div class="card slide-up delay-1">
+            <div class="card-icon"><i class="fas fa-user-plus"></i></div>
+            <div class="card-title">Inscription Autonome</div>
+            <div class="card-text">Création de compte avec validation CIN unique, mot de passe sécurisé avec les 4 validateurs Django</div>
+          </div>
+
+          <div class="card slide-up delay-2">
+            <div class="card-icon"><i class="fas fa-tachometer-alt"></i></div>
+            <div class="card-title">Dashboard Personnel</div>
+            <div class="card-text">4 compteurs : en attente, en cours, terminées, total dépensé. Historique paginé avec annulation AJAX</div>
+          </div>
+
+          <div class="card slide-up delay-3">
+            <div class="card-icon"><i class="fas fa-car"></i></div>
+            <div class="card-title">Catalogue Voitures</div>
+            <div class="card-text">Grille de cartes avec images, marque, modèle, prix/jour, disponibilité en temps réel</div>
+          </div>
+
+          <div class="card slide-up delay-4">
+            <div class="card-icon"><i class="fas fa-calendar-plus"></i></div>
+            <div class="card-title">Réservation en Ligne</div>
+            <div class="card-text">Formulaire avec vérification AJAX de la disponibilité et calcul du coût estimé</div>
+          </div>
+
+          <div class="card slide-up delay-5">
+            <div class="card-icon"><i class="fas fa-list-ul"></i></div>
+            <div class="card-title">Suivi des Réservations</div>
+            <div class="card-text">Historique paginé avec annulation possible pour les demandes en attente via AJAX</div>
+          </div>
+
+          <div class="card slide-up delay-6">
+            <div class="card-icon"><i class="fas fa-bell"></i></div>
+            <div class="card-title">Notifications</div>
+            <div class="card-text">Alertes pour changements de statut, paiements. Badge compteur dans la navbar</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 12: SÉCURITÉ -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">11</span> Gestion des Rôles & Sécurité
+        </h2>
+
+        <div class="grid-4" style="margin-bottom: 1em;">
+          <div class="card slide-up delay-1">
+            <div class="card-icon" style="color: var(--accent);"><i class="fas fa-key"></i></div>
+            <div class="card-title">Authentification</div>
+            <div class="card-text">
+              Django Auth<br>
+              Login / Logout<br>
+              Password Reset<br>
+              Session Management
+            </div>
+          </div>
+
+          <div class="card slide-up delay-2">
+            <div class="card-icon" style="color: #7C3AED;"><i class="fas fa-shield-alt"></i></div>
+            <div class="card-title">Autorisation RBAC</div>
+            <div class="card-text">
+              Groupes : Admin, Employe<br>
+              Client (profil lié)<br>
+              @admin_required<br>
+              Vérifications inline
+            </div>
+          </div>
+
+          <div class="card slide-up delay-3">
+            <div class="card-icon" style="color: var(--success);"><i class="fas fa-lock"></i></div>
+            <div class="card-title">Sécurité Web</div>
+            <div class="card-text">
+              Token CSRF<br>
+              Validation formulaires<br>
+              Password Validators<br>
+              Headers sécurité
+            </div>
+          </div>
+
+          <div class="card slide-up delay-4">
+            <div class="card-icon" style="color: var(--warning);"><i class="fas fa-clipboard-list"></i></div>
+            <div class="card-title">Audit & Traçabilité</div>
+            <div class="card-text">
+              Modèle Historique<br>
+              9 types d'actions<br>
+              Notifications auto<br>
+              Journal d'activité
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box slide-up delay-5" style="border-left-color: var(--danger);">
+          <p><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> <strong>Protection Superuser :</strong> Le système empêche la suppression du compte superuser via la gestion des rôles. Blocage vérifié à la fois côté vue et dans 5 tests unitaires dédiés.</p>
+        </div>
+
+        <div class="card slide-up delay-6" style="margin-top: 0.8em;">
+          <div class="card-title"><i class="fas fa-layer-group" style="color: var(--accent); margin-right: 0.5em;"></i> Niveaux de Protection</div>
+          <div class="grid-3" style="margin-top: 0.5em;">
+            <div style="text-align: center;">
+              <span class="badge badge-blue">Décorateur @login_required</span>
+              <div style="font-size: 0.75em; color: var(--gray-medium); margin-top: 0.3em;">Toutes les vues protégées</div>
+            </div>
+            <div style="text-align: center;">
+              <span class="badge badge-yellow">@admin_required</span>
+              <div style="font-size: 0.75em; color: var(--gray-medium); margin-top: 0.3em;">Actions sensibles</div>
+            </div>
+            <div style="text-align: center;">
+              <span class="badge badge-green">Vérifications inline</span>
+              <div style="font-size: 0.75em; color: var(--gray-medium); margin-top: 0.3em;">Autorisation client</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 13: EXPORTS -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">12</span> Exports PDF & CSV
+        </h2>
+
+        <div class="grid-2">
+          <!-- CSV -->
+          <div class="export-card export-csv slide-up delay-1" style="flex-direction: column;">
+            <div style="display: flex; align-items: center; gap: 0.8em; margin-bottom: 1em;">
+              <div class="export-icon"><i class="fas fa-file-csv"></i></div>
+              <h3 style="color: var(--success);">Exports CSV</h3>
+            </div>
+
+            <div class="card" style="margin-bottom: 0.6em;">
+              <div class="card-title"><i class="fas fa-car" style="margin-right: 0.5em;"></i> Voitures</div>
+              <div class="card-text">Marque, Modèle, Immatriculation, Année, Prix/jour, Statut</div>
+            </div>
+
+            <div class="card" style="margin-bottom: 0.6em;">
+              <div class="card-title"><i class="fas fa-users" style="margin-right: 0.5em;"></i> Clients</div>
+              <div class="card-text">Nom, Prénom, CIN, Téléphone, Email, Adresse</div>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><i class="fas fa-calendar-check" style="margin-right: 0.5em;"></i> Réservations</div>
+              <div class="card-text">Client, Voiture, Dates, Montant, Statut</div>
+            </div>
+          </div>
+
+          <!-- PDF -->
+          <div class="export-card export-pdf slide-up delay-2" style="flex-direction: column;">
+            <div style="display: flex; align-items: center; gap: 0.8em; margin-bottom: 1em;">
+              <div class="export-icon"><i class="fas fa-file-pdf"></i></div>
+              <h3 style="color: var(--danger);">Exports PDF (ReportLab)</h3>
+            </div>
+
+            <div class="card" style="margin-bottom: 0.8em;">
+              <div class="card-title"><i class="fas fa-receipt" style="margin-right: 0.5em;"></i> Facture PDF</div>
+              <div class="card-text">
+                • Numéro de facture<br>
+                • Informations client (nom, CIN, téléphone)<br>
+                • Détails véhicule et dates<br>
+                • Montant total en DH
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title"><i class="fas fa-file-alt" style="margin-right: 0.5em;"></i> Rapport PDF Global</div>
+              <div class="card-text">
+                • Résumé (véhicules, clients, CA)<br>
+                • Top 5 véhicules les plus loués<br>
+                • Top 5 clients par CA généré<br>
+                • CA mensuel sur 6 mois
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box slide-up delay-3" style="margin-top: 0.8em;">
+          <p><i class="fas fa-code" style="color: var(--accent);"></i> <strong>Technologie :</strong> <code>reportlab.pdfgen.canvas</code> et <code>reportlab.lib.pagesizes.A4</code> — Génération côté serveur, format A4, polices standard.</p>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 14: STATISTIQUES -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">13</span> Statistiques & Tableau de Bord
+        </h2>
+
+        <div class="grid-2">
+          <!-- Dashboard -->
+          <div>
+            <h3 style="color: var(--accent); margin-bottom: 0.8em;">
+              <i class="fas fa-tachometer-alt"></i> Dashboard Admin — 11 KPIs
+            </h3>
+
+            <div class="grid-3" style="gap: 0.5em; margin-bottom: 1em;">
+              <div class="stat-card slide-up delay-1">
+                <div style="font-size: 1.5em;"><i class="fas fa-car"></i></div>
+                <div class="stat-label">Véhicules</div>
+              </div>
+              <div class="stat-card slide-up delay-2">
+                <div style="font-size: 1.5em; color: var(--success);"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-label">Disponibles</div>
+              </div>
+              <div class="stat-card slide-up delay-3">
+                <div style="font-size: 1.5em; color: var(--warning);"><i class="fas fa-sync-alt"></i></div>
+                <div class="stat-label">En location</div>
+              </div>
+              <div class="stat-card slide-up delay-4">
+                <div style="font-size: 1.5em; color: var(--danger);"><i class="fas fa-wrench"></i></div>
+                <div class="stat-label">Maintenance</div>
+              </div>
+              <div class="stat-card slide-up delay-5">
+                <div style="font-size: 1.5em; color: #8B5CF6;"><i class="fas fa-users"></i></div>
+                <div class="stat-label">Clients</div>
+              </div>
+              <div class="stat-card slide-up delay-6">
+                <div style="font-size: 1.5em; color: var(--accent);"><i class="fas fa-money-bill-wave"></i></div>
+                <div class="stat-label">CA Total</div>
+              </div>
+            </div>
+
+            <div class="card slide-up delay-3">
+              <div class="card-title"><i class="fas fa-list" style="margin-right: 0.5em;"></i> Sections du Dashboard</div>
+              <div class="card-text" style="line-height: 1.8;">
+                • Demandes en attente (top 10) + boutons AJAX<br>
+                • Véhicule le plus loué avec compteur<br>
+                • Top 5 clients par CA généré<br>
+                • 5 derniers retours enregistrés<br>
+                • Statistiques paiements
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistics Page -->
+          <div>
+            <h3 style="color: var(--accent); margin-bottom: 0.8em;">
+              <i class="fas fa-chart-bar"></i> Page Statistiques
+            </h3>
+
+            <div class="card slide-up delay-2" style="margin-bottom: 0.8em;">
+              <div class="card-title"><i class="fas fa-coins" style="margin-right: 0.5em;"></i> Indicateurs Clés</div>
+              <div class="card-text" style="line-height: 1.8;">
+                • CA Total (réservations terminées)<br>
+                • Taux d'occupation = louées / (total - maintenance)<br>
+                • Total des réservations
+              </div>
+            </div>
+
+            <div class="card slide-up delay-3" style="margin-bottom: 0.8em;">
+              <div class="card-title"><i class="fas fa-table" style="margin-right: 0.5em;"></i> Répartition</div>
+              <div class="card-text" style="line-height: 1.8;">
+                • Répartition par statut (tableau détaillé)<br>
+                • CA mensuel sur 6 derniers mois
+              </div>
+            </div>
+
+            <div class="card slide-up delay-4">
+              <div class="card-title"><i class="fas fa-file-pdf" style="margin-right: 0.5em;"></i> Export</div>
+              <div class="card-text">
+                Lien vers le rapport PDF global avec résumé complet
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 15: TESTS -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">14</span> Tests & Validation
+        </h2>
+
+        <div class="grid-2">
+          <!-- Django Tests -->
+          <div class="slide-up delay-1">
+            <div class="test-card" style="margin-bottom: 1em;">
+              <div class="test-number">110+</div>
+              <div class="test-label">Tests Django Unitaires</div>
+              <div class="test-badge"><i class="fas fa-check-circle"></i> core/tests.py + test_forms.py</div>
+            </div>
+
+            <div class="card">
+              <div class="card-title" style="color: var(--success);">Répartition des tests</div>
+              <div class="card-text" style="line-height: 1.7; font-size: 0.82em;">
+                <i class="fas fa-cube" style="color: var(--warning);"></i> <strong>Modèles :</strong> 24 tests (str, contraintes, calculs)<br>
+                <i class="fas fa-door-open" style="color: var(--accent);"></i> <strong>Vues auth :</strong> 6 tests (login, redirect, accès)<br>
+                <i class="fas fa-car" style="color: var(--secondary);"></i> <strong>CRUD Voitures :</strong> 15 tests (opérations + edge cases)<br>
+                <i class="fas fa-calendar" style="color: var(--success);"></i> <strong>Réservations :</strong> 20 tests (workflow complet)<br>
+                <i class="fas fa-users" style="color: #8B5CF6;"></i> <strong>Clients :</strong> 12 tests (inscription, RBAC)<br>
+                <i class="fas fa-credit-card" style="color: var(--warning);"></i> <strong>Paiements :</strong> 10 tests (CRUD, historique)<br>
+                <i class="fas fa-bell" style="color: var(--danger);"></i> <strong>Notifications :</strong> 8 tests<br>
+                <i class="fas fa-file-export" style="color: var(--success);"></i> <strong>Exports CSV/PDF :</strong> 6 tests<br>
+                <i class="fas fa-shield-alt" style="color: #7C3AED;"></i> <strong>RBAC :</strong> 11 tests (rôles, protection)<br>
+                <i class="fas fa-bolt" style="color: var(--warning);"></i> <strong>AJAX :</strong> 11 tests (API disponibilité)<br>
+                <i class="fas fa-tachometer-alt" style="color: var(--accent);"></i> <strong>Dashboard :</strong> 4 tests<br>
+                <i class="fas fa-edit" style="color: var(--gray-medium);"></i> <strong>Forms :</strong> 31 tests (validation)
+              </div>
+            </div>
+          </div>
+
+          <!-- Playwright Tests -->
+          <div class="slide-up delay-2">
+            <div class="test-card" style="margin-bottom: 1em; border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.1);">
+              <div class="test-number" style="color: var(--accent);">35</div>
+              <div class="test-label">Tests Playwright E2E</div>
+              <div class="test-badge" style="background: rgba(59,130,246,0.2); color: var(--accent);"><i class="fas fa-theater-masks"></i> tests_e2e/app.spec.js</div>
+            </div>
+
+            <div class="card">
+              <div class="card-title" style="color: var(--accent);">Répartition des tests E2E</div>
+              <div class="card-text" style="line-height: 1.7; font-size: 0.82em;">
+                <i class="fas fa-sign-in-alt" style="color: var(--accent);"></i> <strong>Authentification :</strong> 6 tests<br>
+                <i class="fas fa-compass" style="color: var(--secondary);"></i> <strong>Navigation admin :</strong> 1 test<br>
+                <i class="fas fa-car" style="color: var(--success);"></i> <strong>Voitures :</strong> 9 tests (liste, filtres, CRUD)<br>
+                <i class="fas fa-users" style="color: #8B5CF6;"></i> <strong>Clients :</strong> 3 tests (liste, recherche)<br>
+                <i class="fas fa-calendar" style="color: var(--warning);"></i> <strong>Réservations :</strong> 5 tests (CRUD, filtres)<br>
+                <i class="fas fa-bolt" style="color: var(--danger);"></i> <strong>Actions AJAX :</strong> 1 test<br>
+                <i class="fas fa-file-export" style="color: var(--success);"></i> <strong>Exports CSV/PDF :</strong> 3 tests<br>
+                <i class="fas fa-user" style="color: var(--accent);"></i> <strong>Espace client :</strong> 5 tests<br>
+                <i class="fas fa-shield-alt" style="color: var(--warning);"></i> <strong>RBAC :</strong> 2 tests<br>
+                <i class="fas fa-tachometer-alt" style="color: var(--secondary);"></i> <strong>Dashboard :</strong> 2 tests<br>
+                <i class="fas fa-exclamation-triangle" style="color: var(--gray-medium);"></i> <strong>Page 404 :</strong> 1 test
+              </div>
+            </div>
+
+            <div class="card" style="margin-top: 0.8em;">
+              <div class="card-title"><i class="fas fa-camera" style="margin-right: 0.5em;"></i> Captures d'écran</div>
+              <div class="card-text">23 captures automatisées via <code>capture-screenshots.spec.js</code> pour la documentation du PFA</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 16: LIMITES & PERSPECTIVES -->
+      <!-- ============================== -->
+      <section class="slide-bg-dark" data-transition="slide">
+        <h2 class="section-header fade-in">
+          <span class="section-number">15</span> Limites & Perspectives
+        </h2>
+
+        <div class="grid-2">
+          <!-- Limites -->
+          <div>
+            <h3 style="color: var(--danger); margin-bottom: 0.8em;">
+              <i class="fas fa-exclamation-triangle"></i> Limites Actuelles
+            </h3>
+
+            <div class="feature-item slide-up delay-1" style="border-left-color: var(--danger);">
+              <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-database"></i></div>
+              <div class="feature-text">
+                <h4>Base SQLite</h4>
+                <p>Pas adaptée pour la production</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-2" style="border-left-color: var(--danger);">
+              <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-credit-card"></i></div>
+              <div class="feature-text">
+                <h4>Pas de paiement en ligne</h4>
+                <p>Paiement uniquement en espèces/virement</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-3" style="border-left-color: var(--danger);">
+              <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-mobile-alt"></i></div>
+              <div class="feature-text">
+                <h4>Pas d'application mobile</h4>
+                <p>Interface uniquement web</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-4" style="border-left-color: var(--danger);">
+              <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="feature-text">
+                <h4>Pas de géolocalisation</h4>
+                <p>Suivi GPS des véhicules absent</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-5" style="border-left-color: var(--danger);">
+              <div class="feature-icon" style="color: var(--danger);"><i class="fas fa-envelope"></i></div>
+              <div class="feature-text">
+                <h4>Notifications in-app uniquement</h4>
+                <p>Pas d'email ni push notification</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Perspectives -->
+          <div>
+            <h3 style="color: var(--success); margin-bottom: 0.8em;">
+              <i class="fas fa-rocket"></i> Perspectives d'Amélioration
+            </h3>
+
+            <div class="feature-item slide-up delay-1" style="border-left-color: var(--success);">
+              <div class="feature-icon" style="color: var(--success);"><i class="fas fa-database"></i></div>
+              <div class="feature-text">
+                <h4>Migration PostgreSQL</h4>
+                <p>Base de données production robuste</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-2" style="border-left-color: var(--success);">
+              <div class="feature-icon" style="color: var(--success);"><i class="fas fa-credit-card"></i></div>
+              <div class="feature-text">
+                <h4>Paiement en ligne</h4>
+                <p>Intégration Stripe / CGP</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-3" style="border-left-color: var(--success);">
+              <div class="feature-icon" style="color: var(--success);"><i class="fas fa-mobile-alt"></i></div>
+              <div class="feature-text">
+                <h4>Application mobile</h4>
+                <p>Django REST Framework + React Native</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-4" style="border-left-color: var(--success);">
+              <div class="feature-icon" style="color: var(--success);"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="feature-text">
+                <h4>Géolocalisation GPS</h4>
+                <p>Suivi temps réel des véhicules</p>
+              </div>
+            </div>
+
+            <div class="feature-item slide-up delay-5" style="border-left-color: var(--success);">
+              <div class="feature-icon" style="color: var(--success);"><i class="fab fa-docker"></i></div>
+              <div class="feature-text">
+                <h4>Docker + CI/CD</h4>
+                <p>Conteneurisation et déploiement automatique</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== -->
+      <!-- SLIDE 17: CONCLUSION -->
+      <!-- ============================== -->
+      <section class="end-slide" data-transition="fade">
+        <div class="cover-icon slide-up">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <h1 class="end-title slide-up delay-1">Conclusion</h1>
+        <div class="cover-divider slide-up delay-2"></div>
+
+        <div class="card slide-up delay-3" style="max-width: 750px; text-align: left; margin: 1em auto;">
+          <div class="card-title" style="text-align: center; color: var(--accent); margin-bottom: 0.5em;">Résumé du Projet</div>
+          <div class="card-text" style="line-height: 1.8;">
+            Application web complète de gestion de location de voitures développée avec <strong style="color: var(--accent);">Django 6.0</strong>.<br><br>
+            <i class="fas fa-check" style="color: var(--success);"></i> <strong>7 modèles</strong> de données avec relations ORM<br>
+            <i class="fas fa-check" style="color: var(--success);"></i> <strong>55+ vues</strong> avec protection RBAC<br>
+            <i class="fas fa-check" style="color: var(--success);"></i> <strong>39 templates</strong> HTML responsive<br>
+            <i class="fas fa-check" style="color: var(--success);"></i> <strong>42 routes</strong> URL nommées<br>
+            <i class="fas fa-check" style="color: var(--success);"></i> Workflow complet de réservation<br>
+            <i class="fas fa-check" style="color: var(--success);"></i> Exports <strong>PDF</strong> (ReportLab) et <strong>CSV</strong><br>
+            <i class="fas fa-check" style="color: var(--success);"></i> <strong>110+ tests</strong> Django + <strong>35 tests</strong> Playwright
+          </div>
+        </div>
+
+        <div class="slide-up delay-4" style="margin-top: 1em;">
+          <h2 style="font-size: 1.6em; margin-bottom: 0.3em;">Merci de votre attention</h2>
+          <div class="cover-info" style="font-size: 0.95em;">
+            <strong>Kawtar Benyoussef</strong><br>
+            Pr. Houda Orchi — Encadrante<br>
+            <span style="color: var(--accent);">EMSI 2025-2026</span>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- .slides -->
+  </div><!-- .reveal -->
+
+  <!-- Reveal.js Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+
+  <!-- Custom Script -->
+  <script src="script.js"></script>
+
+</body>
+</html>
